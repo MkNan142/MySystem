@@ -1,0 +1,43 @@
+#lineChart_single{
+  min-height: 250px; 
+  height: 250px; 
+  max-height: 250px; 
+  max-width: 100%;
+}
+#lineChart{
+  min-height: 250px; 
+  height: 250px; 
+  max-height: 250px; 
+  max-width: 100%;
+}
+#cost_of_buying_rate {
+  max-width: 120px;
+}
+
+#cost_of_buying_price {
+  max-width: 180px;
+}
+#refreshTime{
+  max-width: 120px;    
+}
+#currency_single {
+  max-width: 127px;
+}
+#date_single {
+  max-width: 100px;
+}
+#base_multiple {
+  max-width: 100px;
+}
+#capital{
+  max-width: 120px;
+
+}
+#currency{
+  max-width: 120px;
+
+}
+#date_range{
+  max-width: 190px;
+
+}
