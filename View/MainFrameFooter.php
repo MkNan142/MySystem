@@ -25,7 +25,7 @@
 <!-- InputMask 欄位遮罩-->
 <script src="plugins/moment/moment.min.js"></script>
 <script src="plugins/inputmask/min/jquery.inputmask.bundle.min.js"></script>
-<!-- Bootstrap slider 圖片滑動樣式-->
+<!-- Bootstrap slider 滑動樣式-->
 <script src="plugins/bootstrap-slider/bootstrap-slider.min.js"></script>
 
 <!-- ChartJS 畫圖功能-->
@@ -68,7 +68,7 @@ if (@$_GET["Content"]) {
 ?>
 <script src="<?php echo $src; ?>"></script>
 <!-- AdminLTE for demo purposes -->
-<script src="dist/js/demo.js"></script>
+<!-- <script src="dist/js/demo.js"></script> -->
 
 </body>
 
