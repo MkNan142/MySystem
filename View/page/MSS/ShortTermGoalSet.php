@@ -48,7 +48,7 @@
                 </div>
               </div>
             </div>
-            <!--交易資料列表-->
+            <!--短期任務列表-->
             <div id="ms_short_table_wrapper" class="dataTables_wrapper dt-bootstrap4">
               <div class="row">
                 <div class="col-sm-12">
@@ -157,7 +157,7 @@
                   <div class="col-sm-6">
                     <label>起始時間</label>
                     <div class="input-group">
-                      <input type="text" class="form-control form_ins_val" name="stg_start_time" id="stg_start_time" placeholder="起始時間" data-fname="起始時間">
+                      <input type="text" class="form-control form_ins_val"  name="stg_start_time" id="stg_start_time" placeholder="起始時間" data-fname="起始時間">
                       <div class="input-group-prepend">
                         <button type="button" class="btn btn-success" onclick="setTime('stg_start_time')">Now</button>
                       </div>

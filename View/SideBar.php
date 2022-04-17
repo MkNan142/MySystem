@@ -103,10 +103,10 @@
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a href="?subSys=MSS&Content=MissionRelations" class="nav-link SideBar_MissionRelations">
+                  <a href="?subSys=MSS&Content=GoalRelations" class="nav-link SideBar_GoalRelations">
                     
                     <i class="fas fa-share-alt nav-icon"></i>
-                    <p>Mission Relations</p>
+                    <p>Goal Relations</p>
                   </a>
                 </li>
               </ul>

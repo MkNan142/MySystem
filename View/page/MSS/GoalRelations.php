@@ -2,12 +2,12 @@
   <div class="container-fluid">
     <div class="row mb-2">
       <div class="col-sm-6">
-        <h1>Mission Relations Set</h1>
+        <h1>Goal Relations Set</h1>
       </div>
       <div class="col-sm-6">
         <ol class="breadcrumb float-sm-right">
           <li class="breadcrumb-item"><a href="#">Home</a></li>
-          <li class="breadcrumb-item active">Mission Relations </li>
+          <li class="breadcrumb-item active">Goal Relations</li>
         </ol>
       </div>
     </div>
@@ -19,9 +19,9 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-md-12">
-        <div class="card  card-danger ">
+        <div class="card  card-secondary ">
           <div class="card-header">
-            <h3 class="card-title">短期任務清單</h3>
+            <h3 class="card-title">未關聯任務清單</h3>
             <div class="card-tools">
               <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
               <!--button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i></button-->
@@ -30,40 +30,35 @@
           <!-- /.card-header -->
           <div class="card-body">
             <div class="row">
-              <div class="col-sm-2 col-2">
-                <button type="button" class="btn btn-default" id="btnMissionCreate" data-toggle="modal" data-target="#modal-MissionCreate"><i class="far fa-plus-square"></i> 新建任務</button>
-              </div>
               <!--div class="col-lg-3 offset-lg-9 col-md-5 offset-md-7 col-sm-7 offset-sm-5 col-9"-->
-              <div class="col-sm-10 col-10">
+              <div class="col-sm-12 col-12">
                 <div class="col-xs-12 text-right input-group justify-content-end">
-                  <select class="custom-select schMissionForm" id="schMissionStatus">
-                    <option value=""></option>
-                    <option value="0">準備中</option>
-                    <option value="1">執行中</option>
-                    <option value="5">完成</option>
-                    <option value="7">取消</option>
-                    <option value="9">刪除</option>
+                  <select class="custom-select schMissionForm" id="schMissionType">
+                    <option value=""></option>                    
+                    <option value="1">長期</option>
+                    <option value="2">中期</option>
+                    <option value="3">短期</option>
+                    <option value="4">每日</option>
                   </select>
-                  <!--input type="text" class="form-control f_input schMissionForm" name="schMissionDateRange" id="schMissionDateRange" placeholder="日期區間" data-fname="日期區間"-->
                 </div>
               </div>
             </div>
-            <!--交易資料列表-->
-            <div id="ms_short_table_wrapper" class="dataTables_wrapper dt-bootstrap4">
+            <!--未關聯任務列表-->
+            <div id="ms_relations_table_wrapper" class="dataTables_wrapper dt-bootstrap4">
               <div class="row">
                 <div class="col-sm-12">
-                  <table id="ms_short_table" class="table  table-hover dataTable" role="grid" aria-describedby="ms_short_table_info">
+                  <table id="ms_relations_table" class="table  table-hover dataTable" role="grid" aria-describedby="ms_relations_table_info">
                     <thead>
                       <tr role="row">
-                        <th id="ms_short_table_edit" class="ms_short_table no_sort" aria-controls="ms_short_table" rowspan="1" colspan="1">操作</th>
-                        <th id="ms_short_table_stg_name" class="ms_short_table no_sort" aria-controls="ms_short_table" rowspan="1" colspan="1">任務名稱</th>
-                        <th id="ms_short_table_stg_status" class="ms_short_table sorting" aria-controls="ms_short_table" rowspan="1" colspan="1">目前狀態</th>
-                        <th id="ms_short_table_stg_start_time" class="ms_short_table sorting" aria-controls="ms_short_table" rowspan="1" colspan="1">開始時間</th>
-                        <th id="ms_short_table_stg_end_time" class="ms_short_table sorting" aria-controls="ms_short_table" rowspan="1" colspan="1">結束時間</th>
-                        <th id="ms_short_table_stg_create_time" class="ms_short_table sorting_desc" aria-controls="ms_short_table" rowspan="1" colspan="1">建立時間</th>
+                        <th id="ms_relations_table_edit" class="ms_relations_table no_sort" aria-controls="ms_relations_table" rowspan="1" colspan="1">操作</th>
+                        <th id="ms_relations_table_stg_name" class="ms_relations_table no_sort" aria-controls="ms_relations_table" rowspan="1" colspan="1">任務名稱</th>
+                        <th id="ms_relations_table_stg_status" class="ms_relations_table sorting" aria-controls="ms_relations_table" rowspan="1" colspan="1">目前狀態</th>
+                        <th id="ms_relations_table_stg_start_time" class="ms_relations_table sorting" aria-controls="ms_relations_table" rowspan="1" colspan="1">開始時間</th>
+                        <th id="ms_relations_table_stg_end_time" class="ms_relations_table sorting" aria-controls="ms_relations_table" rowspan="1" colspan="1">結束時間</th>
+                        <th id="ms_relations_table_stg_create_time" class="ms_relations_table sorting_desc" aria-controls="ms_relations_table" rowspan="1" colspan="1">任務類型</th>
                       </tr>
                     </thead>
-                    <tbody id="ms_short_table_body">
+                    <tbody id="ms_relations_table_body">
 
                       <tr role="row" class="odd">
                         <td class="">-</td>
@@ -80,7 +75,7 @@
               <!-- 頁數按鈕 -->
               <div class="row">
                 <div class="col-sm-12 col-md-5">
-                  <div class="dataTables_info" id="ms_short_table_info" role="status" aria-live="polite">Showing 1 to 10 of 0 entries</div>
+                  <div class="dataTables_info" id="ms_relations_table_info" role="status" aria-live="polite">Showing 1 to 10 of 0 entries</div>
                 </div>
                 <div class="col-sm-12 col-md-7">
                   <ul class="pagination float-right">
@@ -102,12 +97,12 @@
     <!-- /.row -->
   </div><!-- /.container-fluid -->
 
-  <!-- 彈出視窗-新增/修改表單 -->
+  <!-- 彈出視窗-新增/修改關聯表單 -->
   <div class="modal fade" id="modal-MissionCreate" style="display: none;" aria-hidden="true">
     <div class="modal-dialog modal-xl">
       <div class="modal-content">
-        <div class="modal-header bg-danger">
-          <h4 class="modal-title">Short Term Goal Ins/Upd Form</h4>
+        <div class="modal-header bg-secondary ">
+          <h4 class="modal-title">Goal Relations Set Form</h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">×</span>
           </button>

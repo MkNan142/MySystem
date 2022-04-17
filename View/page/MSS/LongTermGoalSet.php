@@ -24,7 +24,6 @@
             <h3 class="card-title">長期任務清單</h3>
             <div class="card-tools">
               <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
-              <!--button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i></button-->
             </div>
           </div>
           <!-- /.card-header -->
@@ -32,8 +31,7 @@
             <div class="row">
               <div class="col-sm-2 col-2">
                 <button type="button" class="btn btn-default" id="btnMissionCreate" data-toggle="modal" data-target="#modal-MissionCreate"><i class="far fa-plus-square"></i> 新建任務</button>
-              </div>
-              <!--div class="col-lg-3 offset-lg-9 col-md-5 offset-md-7 col-sm-7 offset-sm-5 col-9"-->
+              </div>              
               <div class="col-sm-10 col-10">
                 <div class="col-xs-12 text-right input-group justify-content-end">
                   <select class="custom-select schMissionForm" id="schMissionStatus">
@@ -43,12 +41,11 @@
                     <option value="5">完成</option>
                     <option value="7">取消</option>
                     <option value="9">刪除</option>
-                  </select>
-                  <!--input type="text" class="form-control f_input schMissionForm" name="schMissionDateRange" id="schMissionDateRange" placeholder="日期區間" data-fname="日期區間"-->
+                  </select>                  
                 </div>
               </div>
             </div>
-            <!--交易資料列表-->
+            <!--長期任務列表-->
             <div id="ms_long_table_wrapper" class="dataTables_wrapper dt-bootstrap4">
               <div class="row">
                 <div class="col-sm-12">
