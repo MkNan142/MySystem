@@ -31,10 +31,13 @@
           <div class="card-body">
             <div class="row">
               <!--div class="col-lg-3 offset-lg-9 col-md-5 offset-md-7 col-sm-7 offset-sm-5 col-9"-->
-              <div class="col-sm-12 col-12">
+              <div class="col-sm-2 col-2">
+                <button type="button" class="btn btn-default" id="btnGoalRelationsList" data-toggle="modal" data-target="#modal-GoalRelationsList" style="display:none;"><i class="far fa-plus-square"></i> 新建任務</button>
+              </div>
+              <div class="col-sm-10 col-10">
                 <div class="col-xs-12 text-right input-group justify-content-end">
-                  <select class="custom-select schMissionForm" id="schMissionType">
-                    <option value=""></option>                    
+                  <select class="custom-select schMissionForm" id="schGoalType">
+                    <option value=""></option>
                     <option value="1">長期</option>
                     <option value="2">中期</option>
                     <option value="3">短期</option>
@@ -51,11 +54,11 @@
                     <thead>
                       <tr role="row">
                         <th id="ms_relations_table_edit" class="ms_relations_table no_sort" aria-controls="ms_relations_table" rowspan="1" colspan="1">操作</th>
-                        <th id="ms_relations_table_stg_name" class="ms_relations_table no_sort" aria-controls="ms_relations_table" rowspan="1" colspan="1">任務名稱</th>
-                        <th id="ms_relations_table_stg_status" class="ms_relations_table sorting" aria-controls="ms_relations_table" rowspan="1" colspan="1">目前狀態</th>
-                        <th id="ms_relations_table_stg_start_time" class="ms_relations_table sorting" aria-controls="ms_relations_table" rowspan="1" colspan="1">開始時間</th>
-                        <th id="ms_relations_table_stg_end_time" class="ms_relations_table sorting" aria-controls="ms_relations_table" rowspan="1" colspan="1">結束時間</th>
-                        <th id="ms_relations_table_stg_create_time" class="ms_relations_table sorting_desc" aria-controls="ms_relations_table" rowspan="1" colspan="1">任務類型</th>
+                        <th id="ms_relations_table_goal_type" class="ms_relations_table no_sort" aria-controls="ms_relations_table" rowspan="1" colspan="1">任務類型</th>
+                        <th id="ms_relations_table_goal_name" class="ms_relations_table no_sort" aria-controls="ms_relations_table" rowspan="1" colspan="1">任務名稱</th>
+                        <th id="ms_relations_table_goal_status" class="ms_relations_table sorting" aria-controls="ms_relations_table" rowspan="1" colspan="1">目前狀態</th>
+                        <th id="ms_relations_table_goal_start_time" class="ms_relations_table sorting" aria-controls="ms_relations_table" rowspan="1" colspan="1">開始時間</th>
+                        <th id="ms_relations_table_goal_end_time" class="ms_relations_table sorting_desc" aria-controls="ms_relations_table" rowspan="1" colspan="1">結束時間</th>
                       </tr>
                     </thead>
                     <tbody id="ms_relations_table_body">
@@ -97,73 +100,67 @@
     <!-- /.row -->
   </div><!-- /.container-fluid -->
 
-  <!-- 彈出視窗-新增/修改關聯表單 -->
-  <div class="modal fade" id="modal-MissionCreate" style="display: none;" aria-hidden="true">
+  <!-- 彈出視窗-關聯表單 -->
+  <div class="modal fade" id="modal-GoalRelationsList" style="display: none;" aria-hidden="true" data-keyboard="true">
     <div class="modal-dialog modal-xl">
       <div class="modal-content">
         <div class="modal-header bg-secondary ">
-          <h4 class="modal-title">Goal Relations Set Form</h4>
+          <h4 class="modal-title">Goal Relations List</h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">×</span>
           </button>
         </div>
         <div class="modal-body">
           <form role="form">
-            <div class="row">
+            <div class="row ">
               <div class="col-sm-12">
-                <div class="row">
-                  <div class="col-sm-9">
-                    <div class="form-group">
-                      <label>任務名稱</label>
-                      <div class="input-group">
-                        <input type="hidden" class="form-control form_ins_val notnull" name="stg_action" id="stg_action" placeholder="表單動作">
-                        <!--INS新增 UPD修改-->
-                        <input type="hidden" class="form-control form_ins_val " name="stg_id" id="stg_id" placeholder="任務編號">
-                        <input type="text" class="form-control form_ins_val notnull" name="stg_name" id="stg_name" placeholder="任務名稱">
+                <div class="row ">
+                  <div class="col-sm-4">
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">任務名稱</label>
+                      <div class="col-sm-8">
+                        <input type="hidden" class="form-control form_ins_val " name="goal_id" id="goal_id" placeholder="任務編號">
+                        <input type="text" readonly class="form-control-plaintext form_ins_val" name="goal_name" id="goal_name" value="2022作息調整" placeholder="任務名稱">
+                        <!-- <input type="text" class="form-control  notnull" name="stg_name" id="stg_name" placeholder="任務名稱"> -->
                       </div>
                     </div>
                   </div>
-                  <div class="col-sm-3">
-                    <div class="form-group">
-                      <label>任務狀態</label>
-                      <div class="input-group">
-                        <select class="custom-select form_ins_val notnull" id="stg_status">
-                          <option value=""></option>
-                          <option value="0">準備中</option>
-                          <option value="1">執行中</option>
-                          <option value="5">完成</option>
-                          <option value="7">取消</option>
-                          <option value="9">刪除</option>
-                        </select>
+                  <div class="col-sm-4">
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">任務類型</label>
+                      <div class="col-sm-8">
+                        <input type="hidden" readonly class="form-control-plaintext form_ins_val" name="goal_type" id="goal_type" value="短期任務" placeholder="任務類型">
+                        <input type="text" readonly class="form-control-plaintext form_ins_val" name="goal_type_label" id="goal_type_label" value="短期任務" placeholder="任務類型">
                       </div>
                     </div>
                   </div>
-                </div>
-              </div>
-              <div class="col-sm-3">
-                <div class="row">
-
+                  <div class="col-sm-4">
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">任務狀態</label>
+                      <div class="col-sm-8">
+                        <input type="text" readonly class="form-control-plaintext form_ins_val" name="goal_status" id="goal_status" value="短期任務" placeholder="任務類型">
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
             <div class="row">
               <div class="col-sm-12">
                 <div class="row">
-                  <div class="col-sm-6">
-                    <label>起始時間</label>
-                    <div class="input-group">
-                      <input type="text" class="form-control form_ins_val" name="stg_start_time" id="stg_start_time" placeholder="起始時間" data-fname="起始時間">
-                      <div class="input-group-prepend">
-                        <button type="button" class="btn btn-success" onclick="setTime('stg_start_time')">Now</button>
+                  <div class="col-sm-4 ">
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">起始時間</label>
+                      <div class="col-sm-8">
+                        <input type="text" readonly class="form-control-plaintext form_ins_val" name="goal_start_time" id="goal_start_time" placeholder="起始時間" data-fname="起始時間">
                       </div>
                     </div>
                   </div>
-                  <div class="col-sm-6">
-                    <label>結束時間</label>
-                    <div class="input-group">
-                      <input type="text" class="form-control form_ins_val" name="stg_end_time" id="stg_end_time" placeholder="結束時間" data-fname="結束時間">
-                      <div class="input-group-prepend">
-                        <button type="button" class="btn btn-success" onclick="setTime('stg_end_time')">Now</button>
+                  <div class="col-sm-4">
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label">結束時間</label>
+                      <div class="col-sm-8">
+                        <input type="text" readonly class="form-control-plaintext form_ins_val" name="goal_end_time" id="goal_end_time" placeholder="結束時間" data-fname="結束時間">
                       </div>
                     </div>
                   </div>
@@ -174,7 +171,73 @@
               <div class="col-sm-12">
                 <div class="form-group">
                   <label>任務描述</label>
-                  <textarea class="form-control form_ins_val notnull" rows="3" name="stg_describe" id="stg_describe" placeholder="在此輸入詳細任務內容描述..."></textarea>
+                  <textarea readonly class="form-control-plaintext form_ins_val notnull" rows="2" name="goal_describe" id="goal_describe" placeholder="詳細任務內容"></textarea>
+                </div>
+              </div>
+            </div>
+            <hr />
+            <br>
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+              <li class="nav-item">
+                <a class="nav-link active level_tabs" id="lower-tab" data-toggle="tab" href="#lower" role="tab" aria-controls="lower" aria-selected="false">下層關聯</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link level_tabs" id="upper-tab" data-toggle="tab" href="#upper" role="tab" aria-controls="upper" aria-selected="true">上層關聯</a>
+              </li>
+            </ul>
+            <div class="tab-content" id="myTabContent">
+              <button type="button" class="btn btn-outline-secondary" id="btnRelationsCreate" data-toggle="modal" data-target="#modal-RelationsCreate"><i class="far fa-plus-square"></i> 新建關聯</button>
+              
+              <div class="tab-pane fade show active" id="lower" role="tabpanel" aria-labelledby="lower-tab">
+                <div class="col-sm-12">
+                  <table id="ms_lower_relations_table" class="table  table-hover dataTable" role="grid" aria-describedby="ms_relations_table_info">
+                    <thead>
+                      <tr role="row">
+                        <th id="ms_lower_relations_table_edit" class="ms_lower_relations_table no_sort" aria-controls="ms_lower_relations_table" rowspan="1" colspan="1">操作</th>
+                        <th id="ms_lower_relations_table_goal_type" class="ms_lower_relations_table no_sort" aria-controls="ms_lower_relations_table" rowspan="1" colspan="1">下層類型</th>
+                        <th id="ms_lower_relations_table_goal_name" class="ms_lower_relations_table no_sort" aria-controls="ms_lower_relations_table" rowspan="1" colspan="1">任務名稱</th>
+                        <th id="ms_lower_relations_table_goal_status" class="ms_lower_relations_table no_sort" aria-controls="ms_lower_relations_table" rowspan="1" colspan="1">目前狀態</th>
+                        <th id="ms_lower_relations_table_goal_start_time" class="ms_lower_relations_table no_sort" aria-controls="ms_lower_relations_table" rowspan="1" colspan="1">開始時間</th>
+                        <th id="ms_lower_relations_table_goal_end_time" class="ms_lower_relations_table no_sort" aria-controls="ms_lower_relations_table" rowspan="1" colspan="1">結束時間</th>
+                      </tr>
+                    </thead>
+                    <tbody id="ms_lower_relations_table_body">
+                      <tr role="row" class="odd">
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="tab-pane fade" id="upper" role="tabpanel" aria-labelledby="upper-tab">
+                <div class="col-sm-12">
+                  <table id="ms_upper_relations_table" class="table  table-hover dataTable" role="grid" aria-describedby="ms_relations_table_info">
+                    <thead>
+                      <tr role="row">
+                        <th id="ms_upper_relations_table_edit" class="ms_upper_relations_table no_sort" aria-controls="ms_upper_relations_table" rowspan="1" colspan="1">操作</th>
+                        <th id="ms_upper_relations_table_goal_type" class="ms_upper_relations_table no_sort" aria-controls="ms_upper_relations_table" rowspan="1" colspan="1">上層類型</th>
+                        <th id="ms_upper_relations_table_goal_name" class="ms_upper_relations_table no_sort" aria-controls="ms_upper_relations_table" rowspan="1" colspan="1">任務名稱</th>
+                        <th id="ms_upper_relations_table_goal_status" class="ms_upper_relations_table no_sort" aria-controls="ms_upper_relations_table" rowspan="1" colspan="1">目前狀態</th>
+                        <th id="ms_upper_relations_table_goal_start_time" class="ms_upper_relations_table no_sort" aria-controls="ms_upper_relations_table" rowspan="1" colspan="1">開始時間</th>
+                        <th id="ms_upper_relations_table_goal_end_time" class="ms_upper_relations_table no_sort" aria-controls="ms_upper_relations_table" rowspan="1" colspan="1">結束時間</th>
+                      </tr>
+                    </thead>
+                    <tbody id="ms_upper_relations_table_body">
+                      <tr role="row" class="odd">
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                      </tr>
+                    </tbody>
+                  </table>
                 </div>
               </div>
             </div>
@@ -189,5 +252,26 @@
     </div>
 
   </div>
+  <!-- 彈出視窗-關聯設定 -->
+  <div class="modal fade" id="modal-RelationsCreate" style="display: none;" aria-hidden="true" data-keyboard="true">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <div class="modal-header bg-secondary ">
+          <h4 class="modal-title">Goal Relations Set Form</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          123
+        </div>
+        <div class="modal-footer justify-content-between">
+          <button type="button" class="btn btn-default" id="btn_moadl_close" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" onclick="saveform()">送出</button>
+        </div>
+      </div>
 
+    </div>
+
+  </div>
 </section>

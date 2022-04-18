@@ -104,12 +104,78 @@
                 </li>
                 <li class="nav-item">
                   <a href="?subSys=MSS&Content=GoalRelations" class="nav-link SideBar_GoalRelations">
-                    
+
                     <i class="fas fa-share-alt nav-icon"></i>
                     <p>Goal Relations</p>
                   </a>
                 </li>
               </ul>
+            </li>
+          </ul>
+        </li>
+        <!-- sidebar example Charts from AdminLTE 3.2.0 -->
+        <li class="nav-item">
+          <a href="#" class="nav-link">
+            <i class="nav-icon fas fa-chart-pie"></i>
+            <p>
+              Charts 3.2.0
+              <i class="right fas fa-angle-left"></i>
+            </p>
+          </a>
+          <ul class="nav nav-treeview" style="display: none;">
+            <li class="nav-item">
+              <a href="pages/charts/chartjs.html" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>ChartJS</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="pages/charts/flot.html" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Flot</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="pages/charts/inline.html" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Inline</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="pages/charts/uplot.html" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>uPlot</p>
+              </a>
+            </li>
+          </ul>
+        </li>
+        <!-- sidebar example Charts from AdminLTE 3.0.2 -->
+        <li class="nav-item has-treeview">
+          <a href="#" class="nav-link">
+            <i class="nav-icon fas fa-chart-pie"></i>
+            <p>
+              Charts 3.0.2
+              <i class="right fas fa-angle-left"></i>
+            </p>
+          </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a href="pages/charts/chartjs.html" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>ChartJS</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="pages/charts/flot.html" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Flot</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="pages/charts/inline.html" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Inline</p>
+              </a>
             </li>
           </ul>
         </li>
@@ -260,35 +326,6 @@
               <a href="pages/layout/collapsed-sidebar.html" class="nav-link">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Collapsed Sidebar</p>
-              </a>
-            </li>
-          </ul>
-        </li>
-        <li class="nav-item has-treeview">
-          <a href="#" class="nav-link">
-            <i class="nav-icon fas fa-chart-pie"></i>
-            <p>
-              Charts
-              <i class="right fas fa-angle-left"></i>
-            </p>
-          </a>
-          <ul class="nav nav-treeview">
-            <li class="nav-item">
-              <a href="pages/charts/chartjs.html" class="nav-link">
-                <i class="far fa-circle nav-icon"></i>
-                <p>ChartJS</p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="pages/charts/flot.html" class="nav-link">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Flot</p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="pages/charts/inline.html" class="nav-link">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Inline</p>
               </a>
             </li>
           </ul>

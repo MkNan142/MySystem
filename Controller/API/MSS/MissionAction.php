@@ -62,6 +62,17 @@ class MissionAction implements actionPerformed {
       case 'delLongTermMissionByID': //刪除單筆長期目標資料
         $returnData = $MissionModel->delLongTermMissionByID($_POST["data"]);
         break;
+
+        //任務關聯相關
+      case 'getUnconnectedGoal': //取得還沒有關聯的短中長期目標清單
+        $returnData = $MissionModel->getUnconnectedGoal($_POST["data"]);
+        break;
+      case 'getRelationDetailByID':
+        $returnData = $MissionModel->getRelationDetailByID($_POST["data"]);
+        break;
+      case 'getUnconnectedRelationListByID':
+        $returnData = $MissionModel->getUnconnectedRelationListByID($_POST["data"]);
+        break;
     }
     echo json_encode($returnData, true);
   }

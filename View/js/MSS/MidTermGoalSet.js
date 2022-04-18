@@ -10,7 +10,7 @@ $(function () {
     "timePicker": true,
     "timePicker24Hour": true,
     "timePickerSeconds": true,
-    "startDate": now_format,
+    "startDate": null,
     "autoApply": true,
     locale: {
       format: 'YYYY-MM-DD HH:mm:ss',
@@ -19,10 +19,16 @@ $(function () {
   }, function (start, end, label) {
     //console.log('New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')');
   });
-  //任務結束時間在元件初始設定中預設為現在 改為留空
+  //開始時間預設為現在
+  $('#mtg_start_time').data('daterangepicker').setStartDate(now_format);
+  //結束時間預設為年底 並將欄位留空
+  var default_end=new Date(now.getFullYear(),now.getMonth() + 1,0);
+  default_end_format = default_end.getFullYear() + "-12-31 23:59:59";
+  $('#mtg_end_time').data('daterangepicker').setStartDate(default_end_format);
   $('#mtg_end_time').val('');
   //設定日期欄位清除功能
   $('#mtg_start_time,#mtg_end_time').on('cancel.daterangepicker', function (ev, picker) {
+    //$('#mtg_end_time').data('daterangepicker').setStartDate(default_end_format);
     $(this).val('');
   });
 
@@ -255,6 +261,11 @@ function editMission(mtg_id) {
       $.each(data['row'][0], function (k, v) {
         //console.log(k + ':' + v);
         $('#' + k).val(v);
+        if (k == 'mtg_start_time' || k == 'mtg_end_time') {
+          $('#' + k).data('daterangepicker').setStartDate(null);
+          $('#' + k).data('daterangepicker').setStartDate(v);
+        }
+
       });
     },
     error: function (data) {

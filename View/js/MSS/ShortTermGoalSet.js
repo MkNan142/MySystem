@@ -4,13 +4,13 @@ $(function () {
   //設定日期格式遮罩
   var now = new Date();
   now_format = now.getFullYear() + "-" + (now.getMonth() + 1 < 10 ? '0' : '') + (now.getMonth() + 1) + "-" + (now.getDate() < 10 ? '0' : '') + (now.getDate()) + " " + (now.getHours() < 10 ? '0' : '') + now.getHours() + ":" + (now.getMinutes() < 10 ? '0' : '') + now.getMinutes() + ":" + (now.getSeconds() < 10 ? '0' : '') + now.getSeconds();
-  //設定任務開始日期與結束日期的時間挑選元件 並將日期設定為現在
+  //設定任務開始日期與結束日期的時間挑選元件
   $('#stg_start_time,#stg_end_time').daterangepicker({
     "singleDatePicker": true,
     "timePicker": true,
     "timePicker24Hour": true,
     "timePickerSeconds": true,
-    "startDate": now_format,
+    "startDate": null,
     "autoApply": true,
     locale: {
       format: 'YYYY-MM-DD HH:mm:ss',
@@ -19,7 +19,13 @@ $(function () {
   }, function (start, end, label) {
     //console.log('New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')');
   });
-  //任務結束時間在元件初始設定中預設為現在 改為留空
+  //開始時間預設為現在
+  $('#stg_start_time').data('daterangepicker').setStartDate(now_format);
+  //結束時間預設為月底 並將欄位留空
+  var default_end=new Date(now.getFullYear(),now.getMonth() + 1,0);
+  default_end_format = default_end.getFullYear() + "-" + (default_end.getMonth() + 1 < 10 ? '0' : '') + (default_end.getMonth() + 1) + "-" + (default_end.getDate() < 10 ? '0' : '') + (default_end.getDate())+" 23:59:59";
+  $('#stg_end_time').data('daterangepicker').setStartDate(default_end_format);
+
   $('#stg_end_time').val('');
   //設定日期欄位清除功能
   $('#stg_start_time,#stg_end_time').on('cancel.daterangepicker', function (ev, picker) {
@@ -255,6 +261,10 @@ function editMission(stg_id) {
       $.each(data['row'][0], function (k, v) {
         //console.log(k + ':' + v);
         $('#' + k).val(v);
+        if (k == 'stg_start_time' || k == 'stg_end_time') {
+          $('#' + k).data('daterangepicker').setStartDate(null);
+          $('#' + k).data('daterangepicker').setStartDate(v);
+        }
       });
     },
     error: function (data) {
@@ -295,7 +305,7 @@ function reset() {
   now_format = now.getFullYear() + "-" + (now.getMonth() + 1 < 10 ? '0' : '') + (now.getMonth() + 1) + "-" + (now.getDate() < 10 ? '0' : '') + (now.getDate()) + " " + (now.getHours() < 10 ? '0' : '') + now.getHours() + ":" + (now.getMinutes() < 10 ? '0' : '') + now.getMinutes() + ":" + (now.getSeconds() < 10 ? '0' : '') + now.getSeconds();
   $('.form_ins_val').val('');
   $('.form_ins_val').attr('disabled', false);
-  
+
   $('#stg_status').val('0');
   $('#stg_start_time').val(now_format);
   $('#stg_action').val('INS');

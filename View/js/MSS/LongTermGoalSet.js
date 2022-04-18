@@ -10,7 +10,7 @@ $(function () {
     "timePicker": true,
     "timePicker24Hour": true,
     "timePickerSeconds": true,
-    "startDate": now_format,
+    "startDate": null,
     "autoApply": true,
     locale: {
       format: 'YYYY-MM-DD HH:mm:ss',
@@ -19,8 +19,15 @@ $(function () {
   }, function (start, end, label) {
     //console.log('New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')');
   });
-  //任務結束時間在元件初始設定中預設為現在 改為留空
+  //開始時間預設為現在
+  $('#ltg_start_time').data('daterangepicker').setStartDate(now_format);
+  //結束時間預設為5年後的年底 並將欄位留空
+  var default_end = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+  default_end_format = default_end.getFullYear() + 5 + "-12-31 23:59:59";
+  console.log(default_end_format);
+  $('#ltg_end_time').data('daterangepicker').setStartDate(default_end_format);
   $('#ltg_end_time').val('');
+
   //設定日期欄位清除功能
   $('#ltg_start_time,#ltg_end_time').on('cancel.daterangepicker', function (ev, picker) {
     $(this).val('');
@@ -108,7 +115,7 @@ function getRecord(pageNum) {
     dataType: "json",
     data: { data: sch_val, doMissionAction: 'getLongTermMission' },
     success: function (data) {
-      //console.log(data);
+      
       var count_data = 0;
       var ms_long_table_body_html = '';
       var table_field = new Array();
@@ -116,7 +123,6 @@ function getRecord(pageNum) {
         table_field[k] = $(this).attr('id').replace("ms_long_table_", "");
       })
       $.each(data['row'], function (k, v) {
-
         if (count_data % 2 == 0) {
           ms_long_table_body_html += '<tr role="row" class="odd">';
         } else {
@@ -255,6 +261,11 @@ function editMission(ltg_id) {
       $.each(data['row'][0], function (k, v) {
         //console.log(k + ':' + v);
         $('#' + k).val(v);
+        if (k == 'ltg_start_time' || k == 'ltg_end_time') {
+          $('#' + k).data('daterangepicker').setStartDate(null);
+          $('#' + k).data('daterangepicker').setStartDate(v);
+        }
+
       });
     },
     error: function (data) {
@@ -295,7 +306,7 @@ function reset() {
   now_format = now.getFullYear() + "-" + (now.getMonth() + 1 < 10 ? '0' : '') + (now.getMonth() + 1) + "-" + (now.getDate() < 10 ? '0' : '') + (now.getDate()) + " " + (now.getHours() < 10 ? '0' : '') + now.getHours() + ":" + (now.getMinutes() < 10 ? '0' : '') + now.getMinutes() + ":" + (now.getSeconds() < 10 ? '0' : '') + now.getSeconds();
   $('.form_ins_val').val('');
   $('.form_ins_val').attr('disabled', false);
-  
+
   $('#ltg_status').val('0');
   $('#ltg_start_time').val(now_format);
   $('#ltg_action').val('INS');

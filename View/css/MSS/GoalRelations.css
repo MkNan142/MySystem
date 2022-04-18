@@ -1,4 +1,4 @@
-#schMissionType{
+#schGoalType{
   max-width: 120px;
 }
 #schRecordDateRange{
@@ -6,4 +6,7 @@
 }
 #schMissionStatus{
   max-width: 120px;
+}
+#btnRelationsCreate{
+  margin-top: 10px;
 }
