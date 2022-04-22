@@ -7,63 +7,10 @@ $(function () {
 
   //取得任務清單
   getRecord(1);
+  showRelationExpandableTable(0,0);
 })
 
-//表單送出
-// function saveform() {
-//   var form_check = 1;
-//   $('.notnull').each(function () {
-//     if ($(this).val() == '') {
-//       form_check = 0;
-//     }
-//   })
-//   if (!form_check) {
-//     alert('有欄位尚未輸入');
-//     return 0;
-//   }
-//   if (!form_check) {
-//     return 0;
-//   }
-//   var ins_val = new Object();
-//   $('.form_ins_val').each(function () {
-//     //console.log($(this).attr('type'));
-//     ins_val[$(this).attr('id')] = $(this).val();
-//   })
-//   //console.log(ins_val);
-//   var doMissionAction = '';
-//   var FinishAlert = '';
-//   if ($('#stg_action').val() == 'INS') {
-//     doMissionAction = 'insShortTermMission';
-//     FinishAlert = '新增完成';
-//   } else if ($('#stg_action').val() == 'UPD') {
-//     doMissionAction = 'updShortTermMission';
-//     FinishAlert = '修改完成';
-//   }
-//   //return false;
-//   var url = "index.php?subSys=MSS&actionType=API&action=MissionAction";
-//   $.ajax({
-//     type: "POST",
-//     url: url,
-//     dataType: "json",
-//     data: { data: ins_val, doMissionAction: doMissionAction },
-//     success: function (data) {
-//       //console.log(data);
-//       if (data) {
-//         alert(FinishAlert);
-//         $('#btn_moadl_close').click();
-//         reset();
-//         getRecord(1);
-//       }
-//     },
-//     error: function (data) {
-//       console.log(ins_val);
-//       console.log('An error occurred.');
-//       console.log(data);
-//     }
-//   });
-// }
-
-//取得任務清單
+//取得主畫面第一卡片欄的任務清單
 function getRecord(pageNum) {
   var sch_val = new Object();
   sch_val['goal_type'] = $('#schGoalType').val();
@@ -105,22 +52,41 @@ function getRecord(pageNum) {
         $.each(table_field, function (k1, v1) {
           if (v1 == 'edit') {
             show_data = '<div class="btn-group">';
-            show_data += '<button type="button" class="btn btn-default" onclick="showRelationDetail(\'' + v['goal_type'] + '_' + v['goal_id'] + '\')"><i class="far fa-edit"></i></button>';
-            //show_data += '<button type="button" class="btn btn-default" onclick="delMission(' + v['goal_id'] +'_'+ v['goal_type'] + ')"><i class="far fa-trash-alt"></i></button>';
+            show_data += '<button type="button" class="btn btn-default" onclick="showRelationDetail(' + v['goal_type'] + ',' + v['goal_id'] + ')"><i class="far fa-edit"></i></button>';
+            show_data += '<button type="button" class="btn btn-default" onclick="showRelationExpandableTable(' + v['goal_type'] + ',' + v['goal_id'] + ')"><i class="fas fa-search"></i></button>';
             show_data += '</div>';
           } else if (v1 == 'goal_type') {
             switch (v[v1]) {
               case '1':
-                show_data = '長期';
+                show_data = '<span class="badge bg-danger">長期</span>';
+                //show_data = '長期';
                 break;
               case '2':
-                show_data = '中期';
+                show_data = '<span class="badge bg-warning">中期</span>';
                 break;
               case '3':
-                show_data = '短期';
+                show_data = '<span class="badge bg-primary">短期</span>';
                 break;
               case '4':
-                show_data = '每日';
+                show_data = '<span class="badge bg-success">每日</span>';
+                break;
+            }
+          } else if (v1 == 'goal_status') {
+            switch (v[v1]) {
+              case '0':
+                show_data = '準備中';
+                break;
+              case '1':
+                show_data = '執行中';
+                break;
+              case '5':
+                show_data = '完成';
+                break;
+              case '7':
+                show_data = '取消';
+                break;
+              case '9':
+                show_data = '刪除';
                 break;
             }
           } else {
@@ -214,12 +180,18 @@ function getRecord(pageNum) {
     }
   });
 }
-
-function showRelationDetail(goal_type_id) {
+//根據按鈕的參數取出目標的詳細資料
+function showRelationDetail(goal_type, goal_id) {
+  if (!$('#modal-GoalRelationsList').hasClass("show")) {
+    $('#btnGoalRelationsList').click();
+  }
+  reset();
   var sch_val = new Object();
-  var goal_type_id_array = goal_type_id.split("_");
+  /*var goal_type_id_array = goal_type_id.split("_");
   sch_val['goal_type'] = goal_type_id_array[0];
-  sch_val['goal_id'] = goal_type_id_array[1];
+  sch_val['goal_id'] = goal_type_id_array[1];*/
+  sch_val['goal_type'] = goal_type;
+  sch_val['goal_id'] = goal_id;
   //return;
   var url = "index.php?subSys=MSS&actionType=API&action=MissionAction";
   $.ajax({
@@ -228,9 +200,6 @@ function showRelationDetail(goal_type_id) {
     dataType: "json",
     data: { data: sch_val, doMissionAction: 'getRelationDetailByID' }, // serializes the form's elements.
     success: function (data) {
-      console.log(data);
-      $('#btnGoalRelationsList').click();
-      reset();
       //目前目標詳細資料
       $.each(data['row_main_goal'][0], function (k, v) {
         switch (k.substring(4)) {
@@ -277,7 +246,7 @@ function showRelationDetail(goal_type_id) {
             break;
           default:
             k = 'goal' + k.substring(3)
-            console.log('goal' + k.substring(3) + ':' + v);
+            //console.log('goal' + k.substring(3) + ':' + v);
             $('#' + k).val(v);
             break;
         }
@@ -319,7 +288,7 @@ function showRelationDetail(goal_type_id) {
           //console.log(v1);
           if (v1 == 'edit') {
             show_data = '<div class="btn-group">';
-            show_data += '<button type="button" class="btn btn-default" onclick="delRelation(\'Lower_' + v[lower_table_abbr + '_id'] + ')"><i class="far fa-trash-alt"></i></button>';
+            show_data += '<button type="button" class="btn btn-default" onclick="delRelation(' + v['gr_id'] + ')"><i class="far fa-trash-alt"></i></button>';
             show_data += '</div>';
           } else if (v1 == lower_table_abbr + '_status') {
             switch (v[v1]) {
@@ -349,7 +318,7 @@ function showRelationDetail(goal_type_id) {
 
         count_data++;
       })
-      console.log(ms_lower_relations_table_body_html);
+      //console.log(ms_lower_relations_table_body_html);
       //console.log(data['rowcount']);
       $('#ms_lower_relations_table_body').html(ms_lower_relations_table_body_html);
 
@@ -389,7 +358,7 @@ function showRelationDetail(goal_type_id) {
           //console.log(v1);
           if (v1 == 'edit') {
             show_data = '<div class="btn-group">';
-            show_data += '<button type="button" class="btn btn-default" onclick="delRelation(\'upper_' + v[upper_table_abbr + '_id'] + ')"><i class="far fa-trash-alt"></i></button>';
+            show_data += '<button type="button" class="btn btn-default" onclick="delRelation(' + v['gr_id'] + ')"><i class="far fa-trash-alt"></i></button>';
             show_data += '</div>';
           } else if (v1 == upper_table_abbr + '_status') {
             switch (v[v1]) {
@@ -419,7 +388,7 @@ function showRelationDetail(goal_type_id) {
 
         count_data++;
       })
-      console.log(ms_upper_relations_table_body_html);
+      //console.log(ms_upper_relations_table_body_html);
       //console.log(data['rowcount']);
       $('#ms_upper_relations_table_body').html(ms_upper_relations_table_body_html);
     },
@@ -430,21 +399,47 @@ function showRelationDetail(goal_type_id) {
     }
   });
 }
+//根據目標的參數取出還未與目標關聯的清單
 function getUnconnectedRelationList() {
+
   var add_level = '';
   $('.level_tabs').each(function (i) {
     if ($(this).hasClass('active')) {
-      add_level = $(this).attr('id').substring(0,5);
+      add_level = $(this).attr('id').substring(0, 5);
+      $('#goal_relation_set_form_title').text($('#goal_type_label').val() + '目標：' + $('#goal_name').val() + ' / ' + $(this).text());
     }
   });
-  var goal_id=$('#goal_id').val();
-  var goal_type=$('#goal_type').val();
-  
+  var goal_id = $('#goal_id').val();
+  var goal_type = $('#goal_type').val();
+
   var sch_val = new Object();
   sch_val['add_level'] = add_level;
   sch_val['goal_id'] = goal_id;
   sch_val['goal_type'] = goal_type;
+  var add_relation_type = 0;
+  switch (goal_type) {
+    case '1':
+      if (add_level == "lower") {
+        add_relation_type = '1';
+      }
+      break;
+    case '2':
+      if (add_level == "lower") {
+        add_relation_type = '2';
+      } else if (add_level == "upper") {
+        add_relation_type = '1';
+      }
+      break;
+    case '3':
+      if (add_level == "lower") {
+        add_relation_type = '3';
+      } else if (add_level == "upper") {
+        add_relation_type = '2';
+      }
+      break;
+  }
 
+  //console.log(sch_val);
   var url = "index.php?subSys=MSS&actionType=API&action=MissionAction";
   $.ajax({
     type: "POST",
@@ -452,20 +447,80 @@ function getUnconnectedRelationList() {
     dataType: "json",
     data: { data: sch_val, doMissionAction: 'getUnconnectedRelationListByID' }, // serializes the form's elements.
     success: function (data) {
-      console.log(data);
+      //console.log(data);
+      var count_data = 0;
+      var ms_unconnect_relations_table_body_html = '';
+      var table_field = new Array();
+      $.each($('.ms_unconnect_relations_table'), function (k, v) {
+        table_field[k] = $(this).attr('id').replace("ms_unconnect_relations_table_", "");
+      })
+      $.each(data['row'], function (k, v) {
+        var unconnect_table_abbr = Object.keys(v)[0].substring(0, 3);
+        //console.log(unconnect_table_abbr);
+        var goal_type = '';
+        switch (unconnect_table_abbr) {
+          case 'ltg':
+            goal_type = '長期';
+            break;
+          case 'mtg':
+            goal_type = '中期';
+            break;
+          case 'stg':
+            goal_type = '短期';
+            break;
+        }
 
-      // $('#btnMissionCreate').click();
-      // reset();
-      // $('#ltg_action').val('UPD');
-      // $.each(data['row'][0], function (k, v) {
-      //   //console.log(k + ':' + v);
-      //   $('#' + k).val(v);
-      //   if (k == 'ltg_start_time' || k == 'ltg_end_time') {
-      //     $('#' + k).data('daterangepicker').setStartDate(null);
-      //     $('#' + k).data('daterangepicker').setStartDate(v);
-      //   }
+        if (count_data % 2 == 0) {
+          ms_unconnect_relations_table_body_html += '<tr role="row" class="odd">';
+        } else {
+          ms_unconnect_relations_table_body_html += '<tr role="row" class="even">';
+        }
+        var show_data = '';
+        $.each(table_field, function (k1, v1) {
+          if (v1 != 'edit') {
+            v1 = unconnect_table_abbr + v1.substring(4);
+          }
+          if (v1 == 'edit') {
+            show_data = '<div class="btn-group">';
 
-      // });
+            if (add_level == "lower") {
+              show_data += '<button type="button" class="btn btn-default" onclick="addRelation(' + goal_id + ',' + v[unconnect_table_abbr + '_id'] + ',' + add_relation_type + ')"><i class="fas fa-plus"></i></button>';
+            } else if (add_level == "upper") {
+              show_data += '<button type="button" class="btn btn-default" onclick="addRelation(' + v[unconnect_table_abbr + '_id'] + ',' + goal_id + ',' + add_relation_type + ')"><i class="fas fa-plus"></i></button>';
+            }
+
+            show_data += '</div>';
+          } else if (v1 == unconnect_table_abbr + '_status') {
+            switch (v[v1]) {
+              case '0':
+                show_data = '準備中';
+                break;
+              case '1':
+                show_data = '執行中';
+                break;
+              case '5':
+                show_data = '完成';
+                break;
+              case '7':
+                show_data = '取消';
+                break;
+              case '9':
+                show_data = '刪除';
+                break;
+            }
+          } else if (v1 == unconnect_table_abbr + '_type') {
+            show_data = goal_type;
+          } else {
+            show_data = v[v1];
+          }
+          ms_unconnect_relations_table_body_html += '<td>' + show_data + '</td>';
+        })
+
+        count_data++;
+      })
+      //console.log(ms_unconnect_relations_table_body_html);
+      //console.log(data['rowcount']);
+      $('#ms_unconnect_relations_table_body').html(ms_unconnect_relations_table_body_html);
     },
     error: function (data) {
       //console.log(ins_val);
@@ -476,23 +531,22 @@ function getUnconnectedRelationList() {
 
 
 }
-
-function delMission(stg_id) {
+//在一次彈框中刪除關聯
+function delRelation(gr_id) {
   if (!confirm('確定要刪除嗎?')) {
     return 0;
   }
   var sch_val = new Object();
-  sch_val['stg_id'] = stg_id;
+  sch_val['gr_id'] = gr_id;
   var url = "index.php?subSys=MSS&actionType=API&action=MissionAction";
   $.ajax({
     type: "POST",
     url: url,
     dataType: "json",
-    data: { data: sch_val, doMissionAction: 'delShortTermMissionByID' }, // serializes the form's elements.
+    data: { data: sch_val, doMissionAction: 'delGoalRelationsByID' }, // serializes the form's elements.
     success: function (data) {
       alert('刪除完成');
-      //console.log(data);
-      getRecord(1);
+      showRelationDetail($('#goal_type').val(), $('#goal_id').val());
     },
     error: function (data) {
       //console.log(ins_val);
@@ -501,6 +555,127 @@ function delMission(stg_id) {
     }
   });
 }
+//在二次彈框中新增關聯
+function addRelation(gr_main_goal, gr_sub_goal, gr_relation_type) {
+  var sch_val = new Object();
+  sch_val['gr_main_goal'] = gr_main_goal;
+  sch_val['gr_sub_goal'] = gr_sub_goal;
+  sch_val['gr_relation_type'] = gr_relation_type;
+  console.log(sch_val);
+  var url = "index.php?subSys=MSS&actionType=API&action=MissionAction";
+  $.ajax({
+    type: "POST",
+    url: url,
+    dataType: "json",
+    data: { data: sch_val, doMissionAction: 'addGoalRelations' }, // serializes the form's elements.
+    success: function (data) {
+      //console.log(data);
+      alert('新增完成');
+      getUnconnectedRelationList();
+      showRelationDetail($('#goal_type').val(), $('#goal_id').val());
+
+    },
+    error: function (data) {
+      //console.log(ins_val);
+      console.log('An error occurred.');
+      console.log(data);
+    }
+  });
+}
+
+//根據參數取出主畫面第二卡片欄的任務關聯清單
+function showRelationExpandableTable(goal_type, goal_id) {
+  var sch_val = new Object();
+  sch_val['goal_type'] = goal_type;
+  sch_val['goal_id'] = goal_id;
+  console.log(sch_val);
+  var url = "index.php?subSys=MSS&actionType=API&action=MissionAction";
+  $.ajax({
+    type: "POST",
+    url: url,
+    dataType: "json",
+    data: { data: sch_val, doMissionAction: 'showRelationExpandableTable' }, // serializes the form's elements.
+    success: function (data) {
+      console.log(data);
+      var goal_relation_list_expandable_table_html = '';
+      var tmp_ltg = '';
+      var tmp_mtg = '';
+      var row_con=0;
+      $.each(data['row'], function (k, v) {
+
+        if (tmp_mtg != v['mtg_id'] && tmp_mtg != '') {
+          goal_relation_list_expandable_table_html += '</tbody></table></div></td></tr>';
+        }
+        if (tmp_ltg != v['ltg_id']) {
+          if (tmp_ltg != '') {
+            goal_relation_list_expandable_table_html += '</tbody></table></div></td></tr>';
+          }
+          //長期目標的TR
+          goal_relation_list_expandable_table_html += '<tr data-widget="expandable-table" aria-expanded="true">';
+          goal_relation_list_expandable_table_html += '<td><i class="expandable-table-caret fas fa-caret-right fa-fw"></i>';
+          if(v['ltg_id']===null){
+            v['ltg_name']='-';
+          }
+          goal_relation_list_expandable_table_html += v['ltg_name'];
+          goal_relation_list_expandable_table_html += '</td>';
+          goal_relation_list_expandable_table_html += '</tr>';
+
+          //屬於長期目標 伸縮表的表頭
+          goal_relation_list_expandable_table_html += '<tr class="expandable-body">';
+          goal_relation_list_expandable_table_html += '<td>';
+          goal_relation_list_expandable_table_html += '<div class="p-0">';
+          goal_relation_list_expandable_table_html += '<table class="table table-hover">';
+          goal_relation_list_expandable_table_html += '<tbody>';
+        }
+        if(tmp_mtg != v['mtg_id']){
+          //中期目標的TR
+          goal_relation_list_expandable_table_html += '<tr data-widget="expandable-table" aria-expanded="true">';
+          goal_relation_list_expandable_table_html += '<td>';
+          goal_relation_list_expandable_table_html += '<i class="expandable-table-caret fas fa-caret-right fa-fw"></i>';
+          if(v['mtg_id']===null){
+            v['mtg_name']='-';
+          }
+          goal_relation_list_expandable_table_html += v['mtg_name'];
+          goal_relation_list_expandable_table_html += '</td>';
+          goal_relation_list_expandable_table_html += '</tr>';
+          
+          //屬於中期目標 伸縮表的表頭
+          goal_relation_list_expandable_table_html += '<tr class="expandable-body">';
+          goal_relation_list_expandable_table_html += '<td>';
+          goal_relation_list_expandable_table_html += '<div class="p-0">';
+          goal_relation_list_expandable_table_html += '<table class="table table-hover">';
+          goal_relation_list_expandable_table_html += '<tbody>';
+        }
+        
+        goal_relation_list_expandable_table_html += '<tr>';
+        goal_relation_list_expandable_table_html += '<td>';
+        goal_relation_list_expandable_table_html += v['stg_name'];
+        goal_relation_list_expandable_table_html += '</td>';
+        goal_relation_list_expandable_table_html += '</tr>';
+
+
+        tmp_ltg = v['ltg_id'];
+        tmp_mtg = v['mtg_id'];
+        row_con++;
+      });
+      if(row_con>0){
+        goal_relation_list_expandable_table_html += '</tbody></table></div></td></tr>';
+        goal_relation_list_expandable_table_html += '</tbody></table></div></td></tr>';
+      }
+      $('#goal_relation_list_expandable_table').html(goal_relation_list_expandable_table_html);
+    },
+    error: function (data) {
+      console.log('An error occurred.');
+      console.log(data);
+    }
+  });
+
+
+
+
+}
+
+
 
 //重設任務表單
 function reset() {
@@ -509,14 +684,9 @@ function reset() {
   $('.form_ins_val').attr('readonly', true);
 }
 
-//設定欄位為現在時間
-function setTime(field_name) {
-  var now = new Date();
-  now_format = now.getFullYear() + "-" + (now.getMonth() + 1 < 10 ? '0' : '') + (now.getMonth() + 1) + "-" + (now.getDate() < 10 ? '0' : '') + (now.getDate()) + " " + (now.getHours() < 10 ? '0' : '') + now.getHours() + ":" + (now.getMinutes() < 10 ? '0' : '') + now.getMinutes() + ":" + (now.getSeconds() < 10 ? '0' : '') + now.getSeconds();
-  $('#' + field_name).val(now_format);
-}
 
 $('#btnRelationsCreate').on('click', function () {
+  $('#goal_relation_set_form_title').text('Goal Relations Set Form');
   getUnconnectedRelationList();
 })
 

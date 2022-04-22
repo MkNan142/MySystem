@@ -73,6 +73,15 @@ class MissionAction implements actionPerformed {
       case 'getUnconnectedRelationListByID':
         $returnData = $MissionModel->getUnconnectedRelationListByID($_POST["data"]);
         break;
+      case 'delGoalRelationsByID':
+        $returnData = $MissionModel->delGoalRelationsByID($_POST["data"]);
+        break;
+      case 'addGoalRelations':
+        $returnData = $MissionModel->addGoalRelations($_POST["data"]);
+        break;
+      case 'showRelationExpandableTable':
+        $returnData = $MissionModel->showRelationExpandableTable($_POST["data"]);
+        break;
     }
     echo json_encode($returnData, true);
   }

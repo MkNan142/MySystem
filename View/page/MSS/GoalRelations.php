@@ -98,6 +98,103 @@
       </div>
     </div>
     <!-- /.row -->
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">任務關聯清單</h3>
+          </div>
+          <!-- ./card-header -->
+          <div class="card-body p-0">
+            <table class="table table-hover">
+              <tbody id="goal_relation_list_expandable_table">
+                <tr>
+                  <td class="border-0">183</td>
+                </tr>
+                
+                <tr data-widget="expandable-table" aria-expanded="true">
+                  <td>
+                    <i class="expandable-table-caret fas fa-caret-right fa-fw"></i>
+                    219
+                  </td>
+                </tr>
+                <tr class="expandable-body">
+                  <td>
+                    <div class="p-0">
+                      <table class="table table-hover">
+                        <tbody>
+                          <tr data-widget="expandable-table" aria-expanded="false">
+                            <td>
+                              <i class="expandable-table-caret fas fa-caret-right fa-fw"></i>
+                              219-1
+                            </td>
+                          </tr>
+                          <tr class="expandable-body">
+                            <td>
+                              <div class="p-0" style="display: none;">
+                                <table class="table table-hover">
+                                  <tbody>
+                                    <tr>
+                                      <td>219-1-1</td>
+                                    </tr>
+                                    <tr>
+                                      <td>219-1-2</td>
+                                    </tr>
+                                    <tr>
+                                      <td>219-1-3</td>
+                                    </tr>
+
+                                  </tbody>
+                                </table>
+                              </div>
+                            </td>
+                          </tr>
+
+                          <tr data-widget="expandable-table" aria-expanded="false">
+                            <td>
+                              <button type="button" class="btn btn-primary p-0">
+                                <i class="expandable-table-caret fas fa-caret-right fa-fw"></i>
+                              </button>
+                              219-2
+                            </td>
+                          </tr>
+                          <tr class="expandable-body d-none">
+                            <td>
+                              <div class="p-0" style="display: none;">
+                                <table class="table table-hover">
+                                  <tbody>
+                                    <tr>
+                                      <td>219-2-1</td>
+                                    </tr>
+                                    <tr>
+                                      <td>219-2-2</td>
+                                    </tr>
+                                    <tr>
+                                      <td>219-2-3</td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>219-3</td>
+                          </tr>
+
+                        </tbody>
+                      </table>
+                    </div>
+                  </td>
+
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+      </div>
+    </div>
   </div><!-- /.container-fluid -->
 
   <!-- 彈出視窗-關聯表單 -->
@@ -187,7 +284,7 @@
             </ul>
             <div class="tab-content" id="myTabContent">
               <button type="button" class="btn btn-outline-secondary" id="btnRelationsCreate" data-toggle="modal" data-target="#modal-RelationsCreate"><i class="far fa-plus-square"></i> 新建關聯</button>
-              
+
               <div class="tab-pane fade show active" id="lower" role="tabpanel" aria-labelledby="lower-tab">
                 <div class="col-sm-12">
                   <table id="ms_lower_relations_table" class="table  table-hover dataTable" role="grid" aria-describedby="ms_relations_table_info">
@@ -245,7 +342,6 @@
         </div>
         <div class="modal-footer justify-content-between">
           <button type="button" class="btn btn-default" id="btn_moadl_close" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" onclick="saveform()">送出</button>
         </div>
       </div>
 
@@ -257,17 +353,39 @@
     <div class="modal-dialog modal-xl">
       <div class="modal-content">
         <div class="modal-header bg-secondary ">
-          <h4 class="modal-title">Goal Relations Set Form</h4>
+          <h4 class="modal-title" id="goal_relation_set_form_title">Goal Relations Set Form</h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">×</span>
           </button>
         </div>
         <div class="modal-body">
-          123
+          <div class="col-sm-12">
+            <table id="ms_unconnect_relations_table" class="table  table-hover dataTable" role="grid" aria-describedby="ms_relations_table_info">
+              <thead>
+                <tr role="row">
+                  <th id="ms_unconnect_relations_table_edit" class="ms_unconnect_relations_table no_sort" aria-controls="ms_unconnect_relations_table" rowspan="1" colspan="1">操作</th>
+                  <th id="ms_unconnect_relations_table_goal_name" class="ms_unconnect_relations_table no_sort" aria-controls="ms_unconnect_relations_table" rowspan="1" colspan="1">任務名稱</th>
+                  <th id="ms_unconnect_relations_table_goal_status" class="ms_unconnect_relations_table no_sort" aria-controls="ms_unconnect_relations_table" rowspan="1" colspan="1">目前狀態</th>
+                  <th id="ms_unconnect_relations_table_goal_start_time" class="ms_unconnect_relations_table no_sort" aria-controls="ms_unconnect_relations_table" rowspan="1" colspan="1">開始時間</th>
+                  <th id="ms_unconnect_relations_table_goal_end_time" class="ms_unconnect_relations_table no_sort" aria-controls="ms_unconnect_relations_table" rowspan="1" colspan="1">結束時間</th>
+                </tr>
+              </thead>
+              <tbody id="ms_unconnect_relations_table_body">
+                <tr role="row" class="odd">
+                  <td>-</td>
+                  <td>-</td>
+                  <td>-</td>
+                  <td>-</td>
+                  <td>-</td>
+                  <td>-</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
         </div>
         <div class="modal-footer justify-content-between">
           <button type="button" class="btn btn-default" id="btn_moadl_close" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" onclick="saveform()">送出</button>
         </div>
       </div>
 
