@@ -24,7 +24,7 @@
 <script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
 <!-- InputMask 欄位遮罩-->
 <script src="plugins/moment/moment.min.js"></script>
-<script src="plugins/inputmask/min/jquery.inputmask.bundle.min.js"></script>
+<!-- <script src="plugins/inputmask/min/jquery.inputmask.bundle.min.js"></script> -->
 <!-- Bootstrap slider 滑動樣式-->
 <script src="plugins/bootstrap-slider/bootstrap-slider.min.js"></script>
 
@@ -49,6 +49,9 @@
 <!-- AdminLTE App 主要樣式-->
 <script src="dist/js/adminlte.js"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+
+<!-- 通用函數 -->
+<script src="View/js/General.js"></script>
 
 <!-- 其他需要的plugin由該檔案的js引用 -->
 <!-- 引入時需要以index的資料夾(如:View/js/MSS/GoalRelations.js)來推算目標資料夾位置 如下兩例-->

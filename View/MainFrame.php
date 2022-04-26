@@ -23,6 +23,8 @@
   <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker.css">
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <!-- css-loader github:https://github.com/raphaelfabeni/css-loader -->
+  <link rel="stylesheet" href="plugins/css-loader/css-loader.css">
 
   <!-- iCheck -->
   <!-- <link rel="stylesheet" href="plugins/icheck-bootstrap/icheck-bootstrap.min.css"> -->

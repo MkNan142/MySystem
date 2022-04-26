@@ -301,7 +301,7 @@ class MissionModel extends Model {
     return $status;
   }
 
-
+  //設定目標間的關聯
   //取得未關聯過的短中長期目標清單  
   function getUnconnectedGoal($income_data) {
     //return $income_data;
@@ -578,7 +578,7 @@ class MissionModel extends Model {
                 LEFT JOIN mid_term_goal T2 ON T1.gr_sub_goal=T2.mtg_id
                 LEFT JOIN goal_relation T3 ON T2.mtg_id=T3.gr_main_goal AND T3.gr_relation_type=2
                 LEFT JOIN short_term_goal T4 ON T3.gr_sub_goal=T4.stg_id 
-              WHERE T0.ltg_id='".$goal_id."' ";
+              WHERE T0.ltg_id='" . $goal_id . "' ";
           break;
         case '2':
           $sql = "SELECT * 
@@ -587,7 +587,7 @@ class MissionModel extends Model {
                 LEFT JOIN long_term_goal T2 ON T1.gr_main_goal=T2.ltg_id
                 LEFT JOIN goal_relation T3 ON T0.mtg_id=T3.gr_main_goal AND T3.gr_relation_type=2
                 LEFT JOIN short_term_goal T4 ON T3.gr_sub_goal=T4.stg_id 
-              WHERE T0.mtg_id='".$goal_id."' ";
+              WHERE T0.mtg_id='" . $goal_id . "' ";
           break;
         case '3':
           $sql = "SELECT * 
@@ -596,16 +596,153 @@ class MissionModel extends Model {
                 LEFT JOIN mid_term_goal T2 ON T1.gr_main_goal=T2.mtg_id
                 LEFT JOIN goal_relation T3 ON T2.mtg_id=T3.gr_sub_goal AND T3.gr_relation_type=1
                 LEFT JOIN long_term_goal T4 ON T3.gr_main_goal=T4.ltg_id 
-              WHERE T0.stg_id='".$goal_id."' ";
+              WHERE T0.stg_id='" . $goal_id . "' ";
           break;
       }
     }
-    $sql.=" Order by ltg_id,mtg_id,stg_id ";
+    $sql .= " Order by ltg_id,mtg_id,stg_id ";
 
     $stmt = $this->cont->prepare($sql);
     $status[] = $stmt->execute();
     $row = $stmt->fetchAll(PDO::FETCH_ASSOC);
     $data['row'] = $row;
     return $data;
+  }
+
+  //日曆相關功能
+  function getDailyScheduleTemplate() {
+    $sql = "SELECT * FROM `daily_schedule_template` ORDER BY dst_order_number,dst_id ";
+    $stmt = $this->cont->prepare($sql);
+    $status[] = $stmt->execute();
+    $row = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $data['row'] = $row;
+    return $data;
+  }
+
+  function getDailySchedule($income_data) {
+    $start_time = $income_data['start'];
+    $end_time = $income_data['end'];
+
+    $sql = "SELECT * 
+            FROM `daily_schedule`
+            WHERE ds_start_time between :start_time and :end_time
+                  or
+                  ds_end_time between :start_time and :end_time
+                  or
+                  :start_time between ds_start_time and ds_end_time
+                  ";
+    $stmt = $this->cont->prepare($sql);
+    $status[] = $stmt->execute(array(
+      ':start_time' => $start_time,
+      ':end_time' => $end_time
+    ));
+    $row = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $data['row'] = $row;
+    return $data;
+  }
+  function getShortTermGoalList($income_data) {
+    $start = $income_data['start'];
+    $end = $income_data['end'];
+    if ($start != '' && $end != '') {
+      $sql = "SELECT *, date_add(now(), interval -7 day) as '-7',date_add(now(), interval 7 day) as '+7'
+            FROM `short_term_goal` 
+            WHERE '" . $start . "' BETWEEN stg_start_time AND stg_end_time
+                  OR
+                  '" . $end . "' BETWEEN stg_start_time AND stg_end_time
+                  OR
+                  stg_start_time BETWEEN '" . $start . "' AND '" . $end . "' ";
+    } else {
+      $sql = "SELECT *, date_add(now(), interval -7 day) as '-7',date_add(now(), interval 7 day) as '+7'
+            FROM `short_term_goal` 
+            WHERE stg_start_time BETWEEN date_add(now(), interval -7 day) AND date_add(now(), interval 7 day) 
+                  OR 
+                  stg_end_time BETWEEN date_add(now(), interval -7 day) AND date_add(now(), interval 7 day) 
+                  OR 
+                  now() BETWEEN stg_start_time AND stg_end_time";
+    }
+    $stmt = $this->cont->prepare($sql);
+    $status[] = $stmt->execute();
+    $row = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $data['row'] = $row;
+    return $data;
+  }
+  function setEventNewStartEnd($income_data) {
+    $ds_start_time = $income_data['start'];
+    $ds_end_time = $income_data['end'];
+    $ds_id = $income_data['id'];
+
+    $sql = "UPDATE `daily_schedule` SET `ds_start_time`=:ds_start_time,`ds_end_time`=:ds_end_time WHERE ds_id=:ds_id";
+    $stmt = $this->cont->prepare($sql);
+    $status = $stmt->execute(array(
+      ':ds_start_time' => $ds_start_time,
+      ':ds_end_time' => $ds_end_time,
+      ':ds_id' => $ds_id
+    ));
+
+    return $status;
+  }
+  function addNewEvent($income_data) {
+
+    $ds_name = $income_data['name'];
+    $ds_start_time = $income_data['start'];
+    $ds_end_time = $income_data['end'];
+    $ds_goal_relation = $income_data['goal_relation'];
+    $ds_color = $income_data['hex_color'];
+
+
+    $sql = "INSERT INTO `daily_schedule`(`ds_name`, `ds_start_time`, `ds_end_time`, `ds_status`, `ds_goal_relation`, `ds_color`) 
+            VALUES (:ds_name, :ds_start_time, :ds_end_time, :ds_status, :ds_goal_relation, :ds_color)";
+    $stmt = $this->cont->prepare($sql);
+    $status = $stmt->execute(array(
+      ':ds_name' => $ds_name,
+      ':ds_start_time' => $ds_start_time,
+      ':ds_end_time' => $ds_end_time,
+      ':ds_status' => '1',
+      ':ds_goal_relation' => $ds_goal_relation,
+      ':ds_color' => $ds_color
+    ));
+    $LAST_ID = $this->cont->lastInsertId();
+
+
+    return $LAST_ID;
+  }
+  function getDailyScheduleDetial($income_data) {
+    $ds_id = $income_data['publicId'];
+    $sql = "SELECT * 
+            FROM `daily_schedule`
+            WHERE ds_id=:ds_id";
+    $stmt = $this->cont->prepare($sql);
+    $status[] = $stmt->execute(array(
+      ':ds_id' => $ds_id
+    ));
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    $data['row'] = $row;
+    return $data;
+  }
+  function updateEventDetial($income_data) {
+    $ds_id = $income_data['ds_id'];
+    $ds_name = $income_data['ds_name'];
+    $ds_start_time = $income_data['ds_start_time'];
+    $ds_end_time = $income_data['ds_end_time'];
+    $ds_goal_relation = $income_data['ds_goal_relation'];
+    $ds_status = $income_data['ds_status'];
+    $ds_color = $income_data['ds_color'];
+    
+
+    $sql = "UPDATE `daily_schedule` 
+            SET `ds_name`=:ds_name,`ds_start_time`=:ds_start_time,`ds_end_time`=:ds_end_time,`ds_goal_relation`=:ds_goal_relation,`ds_status`=:ds_status,`ds_color`=:ds_color
+            WHERE ds_id=:ds_id";
+    $stmt = $this->cont->prepare($sql);
+    $status = $stmt->execute(array(
+      ':ds_name' => $ds_name,
+      ':ds_start_time' => $ds_start_time,
+      ':ds_end_time' => $ds_end_time,
+      ':ds_goal_relation' => $ds_goal_relation,
+      ':ds_status' => $ds_status,
+      ':ds_color' => $ds_color,
+      ':ds_id' => $ds_id
+    ));
+
+    return $status;
   }
 }

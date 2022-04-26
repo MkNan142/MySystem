@@ -71,11 +71,11 @@
               </a>
             </li>
             <li class="nav-item">
-              <a href="?subSys=MSS&Content=MissionList" class="nav-link SideBar_MissionList">
-                <i class="fas fa-tasks nav-icon"></i>
-                <p>List</p>
+              <a href="?subSys=MSS&Content=MissionCalender" class="nav-link SideBar_MissionCalender">
+                <i class="nav-icon far fa-calendar-alt"></i>
+                <p>Calender</p>
               </a>
-            </li>
+            </li>            
             <li class="nav-item has-treeview">
               <a href="#" class="nav-link ">
                 <i class="fas fa-cog nav-icon"></i>

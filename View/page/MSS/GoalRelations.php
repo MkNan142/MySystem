@@ -21,7 +21,7 @@
       <div class="col-md-12">
         <div class="card  card-secondary ">
           <div class="card-header">
-            <h3 class="card-title">未關聯任務清單</h3>
+            <h3 class="card-title">完整任務清單</h3>
             <div class="card-tools">
               <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
               <!--button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i></button-->
@@ -100,9 +100,13 @@
     <!-- /.row -->
     <div class="row">
       <div class="col-12">
-        <div class="card">
+        <div class="card card-secondary ">
           <div class="card-header">
-            <h3 class="card-title">任務關聯清單</h3>
+            <h3 class="card-title">任務關聯表</h3>
+            <div class="card-tools">
+              <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
+              <!--button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i></button-->
+            </div>
           </div>
           <!-- ./card-header -->
           <div class="card-body p-0">
@@ -111,7 +115,7 @@
                 <tr>
                   <td class="border-0">183</td>
                 </tr>
-                
+
                 <tr data-widget="expandable-table" aria-expanded="true">
                   <td>
                     <i class="expandable-table-caret fas fa-caret-right fa-fw"></i>

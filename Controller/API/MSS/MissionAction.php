@@ -82,6 +82,29 @@ class MissionAction implements actionPerformed {
       case 'showRelationExpandableTable':
         $returnData = $MissionModel->showRelationExpandableTable($_POST["data"]);
         break;
+
+        //日曆相關
+      case 'getDailyScheduleTemplate':
+        $returnData = $MissionModel->getDailyScheduleTemplate();
+        break;
+      case 'getDailySchedule':
+        $returnData = $MissionModel->getDailySchedule($_POST["data"]);
+        break;
+      case 'getShortTermGoalList':
+        $returnData = $MissionModel->getShortTermGoalList($_POST["data"]);
+        break;
+      case 'setEventNewStartEnd':
+        $returnData = $MissionModel->setEventNewStartEnd($_POST["data"]);
+        break;
+      case 'addNewEvent':
+        $returnData = $MissionModel->addNewEvent($_POST["data"]);
+        break;
+      case 'getDailyScheduleDetial':
+        $returnData = $MissionModel->getDailyScheduleDetial($_POST["data"]);
+        break;
+      case 'updateEventDetial':
+        $returnData = $MissionModel->updateEventDetial($_POST["data"]);
+        break;
     }
     echo json_encode($returnData, true);
   }
