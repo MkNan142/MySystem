@@ -56,13 +56,33 @@
             <div class="card-body">
               <div class="btn-group" style="width: 100%; margin-bottom: 10px;">
                 <ul class="fc-color-picker" id="color-chooser">
-                  <li><a class="text-primary" href="#"><i class="fas fa-square"></i></a></li>
-                  <li><a class="text-warning" href="#"><i class="fas fa-square"></i></a></li>
-                  <li><a class="text-success" href="#"><i class="fas fa-square"></i></a></li>
-                  <li><a class="text-danger" href="#"><i class="fas fa-square"></i></a></li>
-                  <li><a class="text-muted" href="#"><i class="fas fa-square"></i></a></li>
-                  <li><a class="" href="#" style="color:#ff00ff"><i class="fas fa-square"></i></a></li>
-                  <li><a class="" href="#" style="color:#aaffff"><i class="fas fa-square"></i></a></li>
+                <li><a class="text-maroon" href="#"><i class="fas fa-square"></i></a></li>
+                <li><a class="text-danger" href="#"><i class="fas fa-square"></i></a></li>
+                <li><a class="text-pink" href="#"><i class="fas fa-square"></i></a></li>
+                
+                <!-- <li><a class="text-fuchsia" href="#"><i class="fas fa-square"></i></a></li> -->
+                <li><a class="text-orange" href="#"><i class="fas fa-square"></i></a></li>
+                <li><a class="text-warning" href="#"><i class="fas fa-square"></i></a></li>
+
+                <li><a class="text-lime" href="#"><i class="fas fa-square"></i></a></li>
+                <li><a class="text-teal" href="#"><i class="fas fa-square"></i></a></li>
+                <li><a class="text-success" href="#"><i class="fas fa-square"></i></a></li>
+                
+                <li><a class="text-olive" href="#"><i class="fas fa-square"></i></a></li>
+                <li><a class="text-info" href="#"><i class="fas fa-square"></i></a></li>
+                <li><a class="text-lightblue" href="#"><i class="fas fa-square"></i></a></li>
+                
+                <li><a class="text-primary" href="#"><i class="fas fa-square"></i></a></li>
+                <li><a class="text-navy" href="#"><i class="fas fa-square"></i></a></li>
+                <li><a class="text-purple" href="#"><i class="fas fa-square"></i></a></li>
+                
+                <li><a class="text-indigo" href="#"><i class="fas fa-square"></i></a></li>
+                <li><a class="text-light" href="#"><i class="fas fa-square"></i></a></li>
+                <li><a class="text-gray" href="#"><i class="fas fa-square"></i></a></li>
+                
+                <li><a class="text-secondary" href="#"><i class="fas fa-square"></i></a></li>
+                <li><a class="text-gray-dark" href="#"><i class="fas fa-square"></i></a></li>
+                <li><a class="text-gray-dark" href="#"><i class="fas fa-square"></i></a></li>
                   <input type="color" id="color_selecter">
                 </ul>
               </div>
@@ -181,7 +201,7 @@
                   </div>
                 </div>
               </div>
-            <hr />
+              <hr />
               <div class="row">
                 <div class="col-sm-12">
                   <div class="row" id="modal_ds_goal_relation_checklist">
@@ -192,8 +212,12 @@
             </form>
           </div>
           <div class="modal-footer justify-content-between">
-            <button type="button" class="btn btn-default" id="btn_moadl_close" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary" onclick="updateEventDetial()">送出</button>
+            <button type="button" class="btn btn-danger" onclick="delEvent()">刪除</button>
+
+            <div class="row">
+              <button type="button" class="btn btn-primary btn_submit" onclick="updDailySchedule()">送出</button>
+              <button type="button" class="btn btn-default" id="btn_moadl_close" data-dismiss="modal">Close</button>
+            </div>
           </div>
         </div>
 

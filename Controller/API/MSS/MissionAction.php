@@ -93,8 +93,8 @@ class MissionAction implements actionPerformed {
       case 'getShortTermGoalList':
         $returnData = $MissionModel->getShortTermGoalList($_POST["data"]);
         break;
-      case 'setEventNewStartEnd':
-        $returnData = $MissionModel->setEventNewStartEnd($_POST["data"]);
+      case 'setDailyScheduleNewStartEnd':
+        $returnData = $MissionModel->setDailyScheduleNewStartEnd($_POST["data"]);
         break;
       case 'addNewEvent':
         $returnData = $MissionModel->addNewEvent($_POST["data"]);
@@ -102,8 +102,11 @@ class MissionAction implements actionPerformed {
       case 'getDailyScheduleDetial':
         $returnData = $MissionModel->getDailyScheduleDetial($_POST["data"]);
         break;
-      case 'updateEventDetial':
-        $returnData = $MissionModel->updateEventDetial($_POST["data"]);
+      case 'updDailySchedule':
+        $returnData = $MissionModel->updDailySchedule($_POST["data"]);
+        break;
+      case 'delEvent':
+        $returnData = $MissionModel->delEvent($_POST["data"]);
         break;
     }
     echo json_encode($returnData, true);

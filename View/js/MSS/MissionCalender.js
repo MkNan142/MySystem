@@ -21,15 +21,24 @@ $(function () {
     picker.container.find(".calendar-table").hide();
   });
   $('#duration').val('');
+  $('#ds_start_time,#ds_end_time').daterangepicker({
+    "singleDatePicker": true,
+    "timePicker": true,
+    "timePicker24Hour": true,
+    "timePickerSeconds": true,
+    "startDate": null,
+    "autoApply": true,
+    locale: {
+      format: 'YYYY-MM-DD HH:mm:ss',
+      cancelLabel: 'Clear'
+    }
+  }, function (start, end, label) {
+    //console.log('New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')');
+  });
 
   /* initialize the calendar
    -----------------------------------------------------------------*/
   //Date for the calendar events (dummy data)
-  var date = new Date()
-  var d = date.getDate(),
-    m = date.getMonth(),
-    y = date.getFullYear()
-
   var Calendar = FullCalendar.Calendar;
   var Draggable = FullCalendar.Draggable;
   var containerEl = document.getElementById('external-events');
@@ -39,7 +48,6 @@ $(function () {
   new Draggable(containerEl, {
     itemSelector: '.external-event',
     eventData: function (eventEl) {
-      //console.log($(eventEl).data('event').duration);
       return {
         title: $(eventEl).data('event').title,
         backgroundColor: window.getComputedStyle(eventEl, null).getPropertyValue('background-color'),
@@ -47,6 +55,7 @@ $(function () {
         textColor: window.getComputedStyle(eventEl, null).getPropertyValue('color'),
         duration: $(eventEl).data('event').duration,
         extendedProps: $(eventEl).data('event').extendedProps,
+        //將可拖拉的元素先預設ID為-1 這樣在放到日曆上時可以根據getEventById('-1')來重新設定此元素在mysql的ID
         id: "-1"
       };
     }
@@ -61,81 +70,70 @@ $(function () {
     },
     themeSystem: 'bootstrap',
     locale: 'tw',
-    //Random default events
     events: [
     ],
     editable: true,
     droppable: true, // this allows things to be dropped onto the calendar !!!
     slotDuration: '00:30',  //日曆表上多長時間作為一格 00:30代表為30分鐘
-    weekNumbers: true, //在周時間表顯示當前週數
+    weekNumbers: true, //在時間表上顯示週數
     defaultTimedEventDuration: '02:00', //設定每個事件的預設執行時間
-    drop: function (info) {
-    },
+    // drop: function (info) {
+    // },
+    // eventAdd: function (addInfo) {
+    //   console.log('eventAdd');
+    //   console.log(addInfo);
+    //   幫彈出視窗的顏色選擇器自訂出一種新顏色
+    //   $('#modal_color_selecter').val('#' + parseInt(Math.random() * 255).toString(16) + parseInt(Math.random() * 255).toString(16) + parseInt(Math.random() * 255).toString(16));
+    //   $('#modal_color_selecter').change();
+    // },
+    // eventChange: function (info) {
+    //   console.log('eventChange');
+    //   console.log(info);
+    // },
+
+    //當日歷的顯示區間改變時觸發
     datesSet: function (dateInfo) {
-      // console.log('datesSet');
-      //console.log(dateInfo);
       var lne = calendar.getEvents().length;
-      calendar.getEvents().forEach(function (value, index) {
+      calendar.getEvents().forEach(function (v, k) {
         lne--;
         calendar.getEvents()[lne].remove();
       })
-      // console.log(calendar.getEvents());
       getDailySchedule(dateInfo.start, dateInfo.end);
     },
-    eventAdd: function (addInfo) {
-      // 幫彈出視窗的顏色選擇器自訂出一種新顏色
-      // $('#modal_color_selecter').val('#' + parseInt(Math.random() * 255).toString(16) + parseInt(Math.random() * 255).toString(16) + parseInt(Math.random() * 255).toString(16));
-      // $('#modal_color_selecter').change();
-
-      // console.log('eventAdd');
-      // console.log(addInfo);
-    },
-    // eventChange: function (info) {
-    //   console.log('eventChange');
-    //   setEventNewStartEnd(info);
-    //   console.log(info);
-    //   console.log(info.event.start);
-    //   console.log(info.event.end);
-    // },
 
     //當日歷接收到新事件時
     eventReceive: function (addInfo) {
-      console.log('eventReceive');
-      console.log(addInfo);
       $('.loader').addClass('is-active');
       addNewEvent(addInfo);
     },
 
     //當調整事件的持續時間時
     eventResize: function (info) {
-      //alert(info.event.title + " 結束時間將改為 " + setDateFormat(info.event.end));
-      if (!confirm(info.event.title + " 結束時間將改為 " + setDateFormat(info.event.end) + "\n確定更改?")) {
-        info.revert();
-      } else {
-        $('.loader').addClass('is-active');
-        setEventNewStartEnd(info);
-      }
+      // if (!confirm(info.event.title + " 結束時間將改為 " + setDateFormat(info.event.end) + "\n確定更改?")) {
+      //   info.revert();
+      // } else {
+      //   $('.loader').addClass('is-active');
+      //   setDailyScheduleNewStartEnd(info);
+      // }
+      $('.loader').addClass('is-active');
+      setDailyScheduleNewStartEnd(info);
     },
 
     //當調整事件的開始與結束時間時
     eventDrop: function (info) {
-      //alert(info.event.title + " 時間調整為 " + setDateFormat(info.event.start) + " ~ " + setDateFormat(info.event.end));
-      if (!confirm(info.event.title + " 時間調整為 " + setDateFormat(info.event.start) + " ~ " + setDateFormat(info.event.end) + "\n確定更改?")) {
-        info.revert();
-      } else {
-        $('.loader').addClass('is-active');
-        setEventNewStartEnd(info);
-      }
+      // if (!confirm(info.event.title + " 時間調整為 " + setDateFormat(info.event.start) + " ~ " + setDateFormat(info.event.end) + "\n確定更改?")) {
+      //   info.revert();
+      // } else {
+      //   $('.loader').addClass('is-active');
+      //   setDailyScheduleNewStartEnd(info);
+      // }
+
+      $('.loader').addClass('is-active');
+      setDailyScheduleNewStartEnd(info);
     },
     eventClick: function (info) {
-      console.log(info);
-      console.log(info.event._def.publicId);
-
       $('#btnDailyScheduleDetial').click();
       getDailyScheduleDetial(info.event._def.publicId);
-      //calendar.getEventById('24').setDates('2022-04-25 08:00:00', '2022-04-25 10:00:00') 根據ID更改開始與結束時間
-      //console.log(info.publicId);
-      //console.log(info._def.publicId)
     },
     eventMouseEnter: function (info) {
       //console.log(info);
@@ -152,8 +150,6 @@ $(function () {
   });
 
   calendar.render();
-  // $('#calendar').fullCalendar()
-
 
   //取得日程樣板後 可依靠new Draggable建立一個可拖拉的div元素
   //draggableEl是元素的ID
@@ -163,7 +159,6 @@ $(function () {
   //<div id='draggableEl' data-event='{ "title": "my event", "duration": "02:00" }'>drag me</div>
 
   //JS樣例
-
   /*new Draggable(draggableEl, {
     eventData: {
       title: 'my event',
@@ -172,7 +167,6 @@ $(function () {
   });*/
 
   getDailyScheduleTemplate();
-  //getDailySchedule();
   getShortTermGoalList();
 })
 
@@ -186,10 +180,8 @@ function getDailyScheduleTemplate() {
     data: { doMissionAction: 'getDailyScheduleTemplate' }, // serializes the form's elements.
     success: function (data) {
       $('#external-events div.external-event').remove();
-      // console.log(data);
       $.each(data['row'], function (k, v) {
-        //console.log(v);
-        // Create events
+        //console.log(k + ':' + v);
         var event = $('<div />');
         var text_color = (luma(v['dst_default_color']) >= 165) ? '000' : 'fff';
         event.css({
@@ -201,11 +193,9 @@ function getDailyScheduleTemplate() {
         event.attr('id', 'external-event-' + v['dst_id']);
         event.text(v['dst_name']);
         $('#external-events').append(event);
-        //console.log(k + ':' + v);
       });
     },
     error: function (data) {
-      //console.log(ins_val);
       console.log('An error occurred.');
       console.log(data);
     }
@@ -214,7 +204,6 @@ function getDailyScheduleTemplate() {
 
 //取得目前已設定好的日常目標
 function getDailySchedule(start, end) {
-
   var sch_val = new Object();
   //使用General.js裡的通用函數setDateFormat轉換日期格式
   sch_val['start'] = setDateFormat(start);
@@ -229,15 +218,16 @@ function getDailySchedule(start, end) {
     success: function (data) {
       // console.log(data);
       $.each(data['row'], function (k, v) {
-        //`ds_id`, `ds_name`, `ds_start_time`, `ds_end_time`, `ds_status`, `ds_goal_relation`, `ds_color`
-        //console.log(v);
-        var new_color = v['ds_color']
+        var new_color = v['ds_color'];
+
+        //如果目標狀態為已完成的話 則將顏色設置為半透明
         if (v['ds_status'] == '5') {
           new_color = v['ds_color'] + '4d';
         }
+
+        //根據背景顏色的亮度決定字體顏色使用黑色或白色
         var text_color = (luma(v['ds_color']) >= 165) ? '000' : 'fff';
-        // console.log(luma(v['ds_color']));
-        // console.log(text_color);
+
         var event = {
           title: v['ds_name'],
           id: v['ds_id'],
@@ -311,26 +301,22 @@ function getShortTermGoalList() {
     }
   });
 }
-function setEventNewStartEnd(info) {
-  //console.log(info);
+function setDailyScheduleNewStartEnd(info) {
   var set_val = new Object();
   //使用General.js裡的通用函數setDateFormat轉換日期格式
   set_val['start'] = setDateFormat(info.event.start);
   set_val['end'] = setDateFormat(info.event.end);
   set_val['id'] = info.event._def.publicId;
 
-  //calendar.getEventById(info.event._def.publicId).setDates(info.oldEvent.start, info.oldEvent.end);
-  //console.log(set_val);
-  //return;
   var url = "index.php?subSys=MSS&actionType=API&action=MissionAction";
   $.ajax({
     type: "POST",
     url: url,
     dataType: "json",
-    data: { data: set_val, doMissionAction: 'setEventNewStartEnd' }, // serializes the form's elements.
+    data: { data: set_val, doMissionAction: 'setDailyScheduleNewStartEnd' }, // serializes the form's elements.
     success: function (data) {
       console.log("日常目標時間變更成功");
-      console.log(data);
+      //console.log(data);
       $('.loader').removeClass('is-active');
     },
     error: function (data) {
@@ -343,18 +329,18 @@ function setEventNewStartEnd(info) {
 
 }
 function addNewEvent(info) {
-  console.log('addNewEvent');
-  //console.log(info.event._def.ui.borderColor);
   var add_val = new Object();
   var hex_color = '';
+
   //取得新日常目標的hex色碼 由於新建的日常目標都會設定為rgb碼 所以需轉換成hex
   var tmp_color = info.event._def.ui.borderColor.match(/\d+/g).map(Number);
-  //console.log(tmp_color);  
-  tmp_color.forEach(function (item, index) {
-    // tmp_color[index] = parseInt(item).toString(16);
-    hex_color += parseInt(item).toString(16);
+  tmp_color.forEach(function (v) {
+    //當數字小於16時 需要補0 以免hex色碼出現不足6碼的情況
+    if (v < 16) {
+      hex_color += '0';
+    }
+    hex_color += parseInt(v).toString(16);
   });
-
 
   //使用General.js裡的通用函數setDateFormat轉換日期格式  
   add_val['start'] = setDateFormat(info.event.start);
@@ -390,13 +376,13 @@ function addNewEvent(info) {
 
 //當點擊日常目標時取得日常目標的相關資料
 function getDailyScheduleDetial(publicId) {
-
+  //將彈出視窗目前勾選的短期目標關聯都取消勾選
   $('input[name="modal_short_term_goal_id"]').each(function () {
     $(this).prop('checked', false);
   })
-  
+  $('#ds_start_time,#ds_end_time').data('daterangepicker').setStartDate(null);
+
   var sch_val = new Object();
-  //使用General.js裡的通用函數setDateFormat轉換日期格式
   sch_val['publicId'] = publicId;
   var url = "index.php?subSys=MSS&actionType=API&action=MissionAction";
   $.ajax({
@@ -406,26 +392,20 @@ function getDailyScheduleDetial(publicId) {
     data: { data: sch_val, doMissionAction: 'getDailyScheduleDetial' }, // serializes the form's elements.
     success: function (data) {
       //console.log(data);
-      var goal_relation;
+      var goal_relation_list;
       $.each(data['row'], function (k, v) {
         $('#' + k).val(v);
         if (k == 'ds_goal_relation') {
-          goal_relation = v.split(',');
+          goal_relation_list = v.split(',');
+        }
+        if (k == 'ds_start_time' || k == 'ds_end_time') {
+          $('#' + k).data('daterangepicker').setStartDate(v);
         }
         $('#modal_color_selecter').val('#' + v);
         $('#modal_color_selecter').change();
 
       });
-      $.ajax({
-        url: getModalShortTermGoalList(),
-        success: function () {
-          goal_relation.forEach(function (v, k) {
-            console.log(v);
-            $('#modal_short_term_goal_checkbox_' + v).prop('checked', true);
-          })
-        }
-      })
-
+      getModalShortTermGoalList(goal_relation_list);
     },
     error: function (data) {
       //console.log(ins_val);
@@ -435,15 +415,9 @@ function getDailyScheduleDetial(publicId) {
   });
 }
 //當點擊日常目標要進行詳細修改時所需取得的短期目標清單
-function getModalShortTermGoalList() {
-  var goal_list = new Array();
-  $('input[name="modal_short_term_goal_id"]').each(function () {
-    if ($(this).prop('checked')) {
-      goal_list.push($(this).val());
-    }
-  })
-  console.log('開始的list');
-  console.log(goal_list);
+function getModalShortTermGoalList(goal_relation_list = '') {
+  // console.log('開始的list');
+  // console.log(goal_list);
   var sch_val = new Object();
   var url = "index.php?subSys=MSS&actionType=API&action=MissionAction";
   sch_val['start'] = $('#ds_start_time').val();
@@ -466,10 +440,13 @@ function getModalShortTermGoalList() {
       })
       $('#modal_ds_goal_relation_checklist').html(tmp);
 
-      goal_list.forEach(function (v, k) {
-        $('#modal_short_term_goal_checkbox_' + v).prop('checked', true);
-      })
-
+      //當勾選格建立完成時 依照當初傳入的清單做預設勾選
+      if (goal_relation_list != '') {
+        goal_relation_list.forEach(function (v, k) {
+          //console.log(v);
+          $('#modal_short_term_goal_checkbox_' + v).prop('checked', true);
+        })
+      }
       //設定"不關聯"的多選方塊被勾選時 取消其他已勾選的短期目標關聯 
       //且當"不關聯"為勾選狀態時 其他短期目標無法勾選
       $('input[name="modal_short_term_goal_id"]').on("change", function () {
@@ -489,8 +466,7 @@ function getModalShortTermGoalList() {
           }
         }
       })
-      console.log('done');
-      return;
+      //console.log('done');
     },
     error: function (data) {
       //console.log(ins_val);
@@ -500,7 +476,7 @@ function getModalShortTermGoalList() {
   });
 }
 //送出日常目標的詳細修改表單
-function updateEventDetial() {
+function updDailySchedule() {
   var form_check = 1;
   $('.notnull').each(function () {
     if ($(this).val() == '') {
@@ -530,13 +506,14 @@ function updateEventDetial() {
   })
   ins_val['ds_goal_relation'] = goal_list;
   ins_val['ds_color'] = $('#modal_color_selecter').val().substr(1, 6);
-  console.log(ins_val);
+  //console.log(ins_val);
+  $('.loader').addClass('is-active');
   var url = "index.php?subSys=MSS&actionType=API&action=MissionAction";
   $.ajax({
     type: "POST",
     url: url,
     dataType: "json",
-    data: { data: ins_val, doMissionAction: "updateEventDetial" },
+    data: { data: ins_val, doMissionAction: "updDailySchedule" },
     success: function (data) {
       //console.log(data);
       if (data) {
@@ -550,13 +527,45 @@ function updateEventDetial() {
           bg_color += '4d';
         }
         calendar.getEventById($('#ds_id').val()).setProp('backgroundColor', bg_color);
-
+        $('.loader').removeClass('is-active');
       }
     },
     error: function (data) {
       console.log(ins_val);
       console.log('An error occurred.');
       console.log(data);
+    }
+  });
+}
+function delEvent() {
+  if (!confirm('確定刪除?')) {
+    return;
+  }
+  $('.loader').addClass('is-active');
+
+  var del_val = new Object();
+  del_val['ds_id'] = $('#ds_id').val();
+
+  var url = "index.php?subSys=MSS&actionType=API&action=MissionAction";
+  $.ajax({
+    type: "POST",
+    url: url,
+    dataType: "json",
+    data: { data: del_val, doMissionAction: "delEvent" },
+    success: function (data) {
+      //console.log(data);
+      if (data) {
+        //console.log('刪除完成')
+        $('#btn_moadl_close').click();
+        calendar.getEventById($('#ds_id').val()).remove();
+        $('.loader').removeClass('is-active');
+      }
+    },
+    error: function (data) {
+      console.log('刪除失敗');
+      console.log(data);
+      console.log(del_val);      
+      $('.loader').removeClass('is-active');      
     }
   });
 }
@@ -614,6 +623,7 @@ $('#add-new-event').click(function (e) {
       goal_relation += $(this).val();
       //console.log($(this).val());
     }
+    $(this).prop('checked', false);
   })
   if (goal_relation == '') {
     alert('請勾選短期目標關聯項目');
@@ -658,7 +668,14 @@ $('#modal_color_selecter').on("change", function () {
 
 $('#ds_start_time,#ds_end_time').on("change", function () {
   if ($('#ds_start_time').val() != '' && $('#ds_end_time').val() != '') {
-    getModalShortTermGoalList();
+
+    var goal_relation_list = new Array();
+    $('input[name="modal_short_term_goal_id"]').each(function () {
+      if ($(this).prop('checked')) {
+        goal_relation_list.push($(this).val());
+      }
+    })
+    getModalShortTermGoalList(goal_relation_list);
   }
 })
 //取得顯眼對比色所使用 參考:https://qa.1r1g.com/sf/ask/44451571/
@@ -694,13 +711,4 @@ function hexToRGBArray(color) {
   for (var i = 0; i <= 2; i++)
     rgb[i] = parseInt(color.substr(i * 2, 2), 16);
   return rgb;
-}
-
-function getChecked() {
-  $('input[name="short_term_goal_id"]').each(function () {
-    if ($(this).prop('checked')) {
-      console.log($(this).val());
-    }
-    //console.log($(this).prop("checked"));
-  })
 }

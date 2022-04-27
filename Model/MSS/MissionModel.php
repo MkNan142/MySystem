@@ -666,7 +666,7 @@ class MissionModel extends Model {
     $data['row'] = $row;
     return $data;
   }
-  function setEventNewStartEnd($income_data) {
+  function setDailyScheduleNewStartEnd($income_data) {
     $ds_start_time = $income_data['start'];
     $ds_end_time = $income_data['end'];
     $ds_id = $income_data['id'];
@@ -719,7 +719,7 @@ class MissionModel extends Model {
     $data['row'] = $row;
     return $data;
   }
-  function updateEventDetial($income_data) {
+  function updDailySchedule($income_data) {
     $ds_id = $income_data['ds_id'];
     $ds_name = $income_data['ds_name'];
     $ds_start_time = $income_data['ds_start_time'];
@@ -727,7 +727,7 @@ class MissionModel extends Model {
     $ds_goal_relation = $income_data['ds_goal_relation'];
     $ds_status = $income_data['ds_status'];
     $ds_color = $income_data['ds_color'];
-    
+
 
     $sql = "UPDATE `daily_schedule` 
             SET `ds_name`=:ds_name,`ds_start_time`=:ds_start_time,`ds_end_time`=:ds_end_time,`ds_goal_relation`=:ds_goal_relation,`ds_status`=:ds_status,`ds_color`=:ds_color
@@ -743,6 +743,17 @@ class MissionModel extends Model {
       ':ds_id' => $ds_id
     ));
 
+    return $status;
+  }
+
+  function delEvent($income_data) {
+    $ds_id = $income_data['ds_id'];
+    $sql = "DELETE FROM `daily_schedule`
+            WHERE ds_id=:ds_id";
+    $stmt = $this->cont->prepare($sql);
+    $status = $stmt->execute(array(
+      ':ds_id' => $ds_id
+    ));
     return $status;
   }
 }
