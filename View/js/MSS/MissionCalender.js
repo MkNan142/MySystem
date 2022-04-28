@@ -380,8 +380,23 @@ function getDailyScheduleDetial(publicId) {
   $('input[name="modal_short_term_goal_id"]').each(function () {
     $(this).prop('checked', false);
   })
-  $('#ds_start_time,#ds_end_time').data('daterangepicker').setStartDate(null);
-
+  //元件沒有設計清除選取值的涵式 需要直接移除後重新綁定一次
+  $('#ds_start_time,#ds_end_time').data('daterangepicker').remove();
+  $('#ds_start_time,#ds_end_time').daterangepicker({
+    "singleDatePicker": true,
+    "timePicker": true,
+    "timePicker24Hour": true,
+    "timePickerSeconds": true,
+    "startDate": null,
+    "autoApply": true,
+    locale: {
+      format: 'YYYY-MM-DD HH:mm:ss',
+      cancelLabel: 'Clear'
+    }
+  }, function (start, end, label) {
+    //console.log('New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')');
+  });
+  
   var sch_val = new Object();
   sch_val['publicId'] = publicId;
   var url = "index.php?subSys=MSS&actionType=API&action=MissionAction";
@@ -564,8 +579,8 @@ function delEvent() {
     error: function (data) {
       console.log('刪除失敗');
       console.log(data);
-      console.log(del_val);      
-      $('.loader').removeClass('is-active');      
+      console.log(del_val);
+      $('.loader').removeClass('is-active');
     }
   });
 }

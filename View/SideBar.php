@@ -79,11 +79,23 @@
             <li class="nav-item has-treeview">
               <a href="#" class="nav-link ">
                 <i class="fas fa-cog nav-icon"></i>
-                <p>Goal Setting
+                <p>MSS Setting
                   <i class="right fas fa-angle-left"></i>
                 </p>
               </a>
               <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="?subSys=MSS&Content=PerformanceIndicatorSet" class="nav-link SideBar_PerformanceIndicatorSet">
+                  <i class="fab fa-audible nav-icon"></i>  
+                    <p>Performance Indicator</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="?subSys=MSS&Content=DailyScheduleTemplateSet" class="nav-link SideBar_DailyScheduleTemplateSet">
+                    <i class="fas fa-genderless nav-icon"></i>
+                    <p>Daily Schedule Template</p>
+                  </a>
+                </li>
                 <li class="nav-item">
                   <a href="?subSys=MSS&Content=ShortTermGoalSet" class="nav-link SideBar_ShortTermGoalSet">
                     <i class="fas fa-genderless nav-icon"></i>

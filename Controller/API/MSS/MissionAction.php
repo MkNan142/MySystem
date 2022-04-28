@@ -9,7 +9,7 @@ class MissionAction implements actionPerformed {
     $doMissionAction = $_POST["doMissionAction"];
     switch ($doMissionAction) {
 
-        //短期相關
+        //短期任務設定相關
       case 'insShortTermMission': //建立短期目標
         $returnData = $_POST["data"];
         $returnData = $MissionModel->insShortTermMission($_POST["data"]);
@@ -27,7 +27,7 @@ class MissionAction implements actionPerformed {
         $returnData = $MissionModel->delShortTermMissionByID($_POST["data"]);
         break;
 
-        //中期相關
+        //中期任務設定相關
       case 'insMidTermMission': //建立中期目標
         $returnData = $_POST["data"];
         $returnData = $MissionModel->insMidTermMission($_POST["data"]);
@@ -45,7 +45,7 @@ class MissionAction implements actionPerformed {
         $returnData = $MissionModel->delMidTermMissionByID($_POST["data"]);
         break;
 
-        //長期相關
+        //長期任務設定相關
       case 'insLongTermMission': //建立長期目標
         $returnData = $_POST["data"];
         $returnData = $MissionModel->insLongTermMission($_POST["data"]);
@@ -63,7 +63,7 @@ class MissionAction implements actionPerformed {
         $returnData = $MissionModel->delLongTermMissionByID($_POST["data"]);
         break;
 
-        //任務關聯相關
+        //任務關聯設定相關
       case 'getUnconnectedGoal': //取得還沒有關聯的短中長期目標清單
         $returnData = $MissionModel->getUnconnectedGoal($_POST["data"]);
         break;
@@ -108,6 +108,24 @@ class MissionAction implements actionPerformed {
       case 'delEvent':
         $returnData = $MissionModel->delEvent($_POST["data"]);
         break;
+
+        //績效指標設定相關
+      case 'getPerformanceIndicator':
+        $returnData = $MissionModel->getPerformanceIndicator($_POST["data"]);
+        break;
+      case 'insPerformanceIndicator':
+        $returnData = $MissionModel->insPerformanceIndicator($_POST["data"]);
+        break;
+      case 'updPerformanceIndicator':
+        $returnData = $MissionModel->updPerformanceIndicator($_POST["data"]);
+        break;
+      case 'getPerformanceIndicatorByID':
+        $returnData = $MissionModel->getPerformanceIndicatorByID($_POST["data"]);
+        break;
+      case 'delPerformanceIndicatorByID':
+        $returnData = $MissionModel->delPerformanceIndicatorByID($_POST["data"]);
+        break;
+
     }
     echo json_encode($returnData, true);
   }

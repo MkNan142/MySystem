@@ -56,34 +56,35 @@
             <div class="card-body">
               <div class="btn-group" style="width: 100%; margin-bottom: 10px;">
                 <ul class="fc-color-picker" id="color-chooser">
-                <li><a class="text-maroon" href="#"><i class="fas fa-square"></i></a></li>
-                <li><a class="text-danger" href="#"><i class="fas fa-square"></i></a></li>
-                <li><a class="text-pink" href="#"><i class="fas fa-square"></i></a></li>
-                
-                <!-- <li><a class="text-fuchsia" href="#"><i class="fas fa-square"></i></a></li> -->
-                <li><a class="text-orange" href="#"><i class="fas fa-square"></i></a></li>
-                <li><a class="text-warning" href="#"><i class="fas fa-square"></i></a></li>
+                  <li><a class="text-maroon" href="#"><i class="fas fa-square"></i></a></li>
+                  <li><a class="text-danger" href="#"><i class="fas fa-square"></i></a></li>
+                  <li><a class="text-pink" href="#"><i class="fas fa-square"></i></a></li>
 
-                <li><a class="text-lime" href="#"><i class="fas fa-square"></i></a></li>
-                <li><a class="text-teal" href="#"><i class="fas fa-square"></i></a></li>
-                <li><a class="text-success" href="#"><i class="fas fa-square"></i></a></li>
-                
-                <li><a class="text-olive" href="#"><i class="fas fa-square"></i></a></li>
-                <li><a class="text-info" href="#"><i class="fas fa-square"></i></a></li>
-                <li><a class="text-lightblue" href="#"><i class="fas fa-square"></i></a></li>
-                
-                <li><a class="text-primary" href="#"><i class="fas fa-square"></i></a></li>
-                <li><a class="text-navy" href="#"><i class="fas fa-square"></i></a></li>
-                <li><a class="text-purple" href="#"><i class="fas fa-square"></i></a></li>
-                
-                <li><a class="text-indigo" href="#"><i class="fas fa-square"></i></a></li>
-                <li><a class="text-light" href="#"><i class="fas fa-square"></i></a></li>
-                <li><a class="text-gray" href="#"><i class="fas fa-square"></i></a></li>
-                
-                <li><a class="text-secondary" href="#"><i class="fas fa-square"></i></a></li>
-                <li><a class="text-gray-dark" href="#"><i class="fas fa-square"></i></a></li>
-                <li><a class="text-gray-dark" href="#"><i class="fas fa-square"></i></a></li>
-                  <input type="color" id="color_selecter">
+                  <!-- <li><a class="text-fuchsia" href="#"><i class="fas fa-square"></i></a></li> -->
+                  <li><a class="text-orange" href="#"><i class="fas fa-square"></i></a></li>
+                  <li><a class="text-warning" href="#"><i class="fas fa-square"></i></a></li>
+
+                  <li><a class="text-lime" href="#"><i class="fas fa-square"></i></a></li>
+                  <li><a class="text-teal" href="#"><i class="fas fa-square"></i></a></li>
+                  <li><a class="text-success" href="#"><i class="fas fa-square"></i></a></li>
+
+                  <li><a class="text-olive" href="#"><i class="fas fa-square"></i></a></li>
+                  <li><a class="text-info" href="#"><i class="fas fa-square"></i></a></li>
+                  <li><a class="text-lightblue" href="#"><i class="fas fa-square"></i></a></li>
+
+                  <li><a class="text-primary" href="#"><i class="fas fa-square"></i></a></li>
+                  <li><a class="text-navy" href="#"><i class="fas fa-square"></i></a></li>
+                  <li><a class="text-purple" href="#"><i class="fas fa-square"></i></a></li>
+
+                  <li><a class="text-indigo" href="#"><i class="fas fa-square"></i></a></li>
+                  <li><a class="text-light" href="#"><i class="fas fa-square"></i></a></li>
+                  <li><a class="text-gray" href="#"><i class="fas fa-square"></i></a></li>
+
+                  <li><a class="text-secondary" href="#"><i class="fas fa-square"></i></a></li>
+                  <li><a class="text-gray-dark" href="#"><i class="fas fa-square"></i></a></li>
+                  <li><a class="text-gray-dark" href="#"><i class="fas fa-square"></i></a></li>
+                  <li><input type="color" id="color_selecter"></li>
+
                 </ul>
               </div>
               <!-- /btn-group -->
