@@ -82,7 +82,6 @@
 
                   <li><a class="text-secondary" href="#"><i class="fas fa-square"></i></a></li>
                   <li><a class="text-gray-dark" href="#"><i class="fas fa-square"></i></a></li>
-                  <li><a class="text-gray-dark" href="#"><i class="fas fa-square"></i></a></li>
                   <li><input type="color" id="color_selecter"></li>
 
                 </ul>
@@ -99,19 +98,6 @@
 
               <div class="row" id="ds_goal_relation_checklist">
                 <!-- 新日常目標所要關聯的短期目標 -->
-                <div class="form-check col-sm-6">
-                  <input class="form-check-input" type="checkbox" id="customCheck1">
-                  <label class="form-check-label" for="customCheck1">Checkbox</label>
-                </div>
-                <div class="form-check col-sm-6">
-                  <input class="form-check-input" type="checkbox" checked="">
-                  <label class="form-check-label">Checkbox checked</label>
-                </div>
-                <div class="form-check col-sm-6">
-                  <input class="form-check-input" type="checkbox" disabled="">
-                  <label class="form-check-label">Checkbox disabled</label>
-                </div>
-
               </div>
 
             </div>
@@ -148,54 +134,56 @@
           </div>
           <div class="modal-body">
             <form role="form">
-              <div class="row">
-                <div class="col-sm-6">
-                  <div class="form-group">
-                    <label>日常目標名稱</label>
-                    <div class="input-group">
-                      <!--INS新增 UPD修改-->
-                      <input type="hidden" class="form-control form_ins_val " name="ds_id" id="ds_id" placeholder="日常目標編號">
-                      <input type="text" class="form-control form_ins_val notnull" name="ds_name" id="ds_name" placeholder="日常目標名稱">
-                    </div>
-                  </div>
-                </div>
-                <div class="col-sm-3">
-                  <div class="form-group">
-                    <label>日常目標狀態</label>
-                    <div class="input-group">
-                      <select class="custom-select form_ins_val notnull" id="ds_status">
-                        <option value=""></option>
-                        <option value="1">執行中</option>
-                        <option value="5">完成</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-sm-3">
-                  <div class="row">
-                    <label>背景顏色</label><input type="color" id="modal_color_selecter">
-                    <input type="text" class="form-control" id="modal_color_selecter_show_div" placeholder="背景顏色" value="背景顏色" disabled>
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-sm-12">
-                  <div class="row">
-                    <div class="col-sm-6">
-                      <label>起始時間</label>
+              <div id="modal_edit_div">
+                <div class="row">
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label>日常目標名稱</label>
                       <div class="input-group">
-                        <input type="text" class="form-control form_ins_val notnull" name="ds_start_time" id="ds_start_time" placeholder="起始時間" data-fname="起始時間">
-                        <div class="input-group-prepend">
-                          <!-- <button type="button" class="btn btn-success" onclick="setTime('ds_start_time')">Now</button> -->
-                        </div>
+                        <!--INS新增 UPD修改-->
+                        <input type="hidden" class="form-control form_ins_val " name="ds_id" id="ds_id" placeholder="日常目標編號">
+                        <input type="text" class="form-control form_ins_val notnull" name="ds_name" id="ds_name" placeholder="日常目標名稱">
                       </div>
                     </div>
-                    <div class="col-sm-6">
-                      <label>結束時間</label>
+                  </div>
+                  <div class="col-sm-3">
+                    <div class="form-group">
+                      <label>日常目標狀態</label>
                       <div class="input-group">
-                        <input type="text" class="form-control form_ins_val notnull" name="ds_end_time" id="ds_end_time" placeholder="結束時間" data-fname="結束時間">
-                        <div class="input-group-prepend">
-                          <!-- <button type="button" class="btn btn-success" onclick="setTime('ds_end_time')">Now</button> -->
+                        <select class="custom-select form_ins_val notnull" id="ds_status">
+                          <option value=""></option>
+                          <option value="1">執行中</option>
+                          <option value="5">完成</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-3">
+                    <div class="row">
+                      <label>背景顏色</label><input type="color" id="modal_color_selecter">
+                      <input type="text" class="form-control" id="modal_color_selecter_show_div" placeholder="背景顏色" value="背景顏色" disabled>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-12">
+                    <div class="row">
+                      <div class="col-sm-6">
+                        <label>起始時間</label>
+                        <div class="input-group">
+                          <input type="text" class="form-control form_ins_val notnull" name="ds_start_time" id="ds_start_time" placeholder="起始時間" data-fname="起始時間">
+                          <div class="input-group-prepend">
+                            <!-- <button type="button" class="btn btn-success" onclick="setTime('ds_start_time')">Now</button> -->
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-sm-6">
+                        <label>結束時間</label>
+                        <div class="input-group">
+                          <input type="text" class="form-control form_ins_val notnull" name="ds_end_time" id="ds_end_time" placeholder="結束時間" data-fname="結束時間">
+                          <div class="input-group-prepend">
+                            <!-- <button type="button" class="btn btn-success" onclick="setTime('ds_end_time')">Now</button> -->
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -210,10 +198,45 @@
                   </div>
                 </div>
               </div>
+              <br>
+              <div id="modal_finish_div">
+                <div class="row">
+                  <div class="col-sm-12">
+                    <div class="row">
+                      <div class="col-sm-6">
+                        <label>執行起始</label>
+                        <div class="input-group form-group">
+                          <input type="text" class="form-control form_ins_val " name="ds_execution_start_time" id="ds_execution_start_time" placeholder="執行起始" data-fname="執行起始">
+                          <div class="input-group-prepend">
+                            <!-- <button type="button" class="btn btn-success" onclick="setTime('ds_execution_start_time')">Now</button> -->
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-sm-6">
+                        <label>執行結束</label>
+                        <div class="input-group form-group">
+                          <input type="text" class="form-control form_ins_val " name="ds_execution_end_time" id="ds_execution_end_time" placeholder="執行結束" data-fname="執行結束">
+                          <div class="input-group-prepend">
+                            <button type="button" class="btn btn-success" onclick="setTime('ds_execution_end_time')">Now</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-12">
+                    <div class="row" id="modal_performance_indicator_record_checklist">
+
+                    </div>
+                  </div>
+                </div>
+              </div>
             </form>
           </div>
           <div class="modal-footer justify-content-between">
             <button type="button" class="btn btn-danger" onclick="delEvent()">刪除</button>
+            <button type="button" class="btn btn-success" onclick="" id="btnShowModalFinish">完成</button>
 
             <div class="row">
               <button type="button" class="btn btn-primary btn_submit" onclick="updDailySchedule()">送出</button>

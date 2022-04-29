@@ -1,12 +1,19 @@
-#schGoalType{
+#schGoalType {
   max-width: 120px;
 }
-#schRecordDateRange{
+
+#schRecordDateRange {
   max-width: 190px;
 }
-#schMissionStatus{
+
+#schMissionStatus {
   max-width: 120px;
 }
-#btnRelationsCreate{
+
+#btnRelationsCreate {
   margin-top: 10px;
+}
+
+#goal_relation_list_expandable_table span {
+  margin-right: 10px;
 }

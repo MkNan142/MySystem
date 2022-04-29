@@ -32,7 +32,6 @@ class DailyScheduleTemplateSetModel extends Model {
     $data['rowcount'] = $rowcount;
     return $data;
   }
-
   // `dst_id`, `dst_name`, `dst_default_goal_relation`, `dst_default_duration`, `dst_default_color`, `dst_order_number`
   function insDailyScheduleTemplate($income_data) {
     $dst_name = $income_data['dst_name'];
@@ -113,5 +112,32 @@ class DailyScheduleTemplateSetModel extends Model {
       ':dst_id' => $dst_id
     ));
     return $status;
+  }
+
+  function getShortTermGoalList($income_data) {
+    $start = $income_data['start'];
+    $end = $income_data['end'];
+    if ($start != '' && $end != '') {
+      $sql = "SELECT *, date_add(now(), interval -7 day) as '-7',date_add(now(), interval 7 day) as '+7'
+            FROM `short_term_goal` 
+            WHERE '" . $start . "' BETWEEN stg_start_time AND stg_end_time
+                  OR
+                  '" . $end . "' BETWEEN stg_start_time AND stg_end_time
+                  OR
+                  stg_start_time BETWEEN '" . $start . "' AND '" . $end . "' ";
+    } else {
+      $sql = "SELECT *, date_add(now(), interval -7 day) as '-7',date_add(now(), interval 7 day) as '+7'
+            FROM `short_term_goal` 
+            WHERE stg_start_time BETWEEN date_add(now(), interval -7 day) AND date_add(now(), interval 7 day) 
+                  OR 
+                  stg_end_time BETWEEN date_add(now(), interval -7 day) AND date_add(now(), interval 7 day) 
+                  OR 
+                  now() BETWEEN stg_start_time AND stg_end_time";
+    }
+    $stmt = $this->cont->prepare($sql);
+    $status[] = $stmt->execute();
+    $row = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $data['row'] = $row;
+    return $data;
   }
 }

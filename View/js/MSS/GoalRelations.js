@@ -7,7 +7,7 @@ $(function () {
 
   //取得任務清單
   getRecord(1);
-  showRelationExpandableTable(0,0);
+  showRelationExpandableTable(0, 0);
 })
 
 //取得主畫面第一卡片欄的任務清單
@@ -27,7 +27,7 @@ function getRecord(pageNum) {
   })
   sch_val['pageNum'] = pageNum;
   //console.log(sch_val);
-  var url = "index.php?subSys=MSS&actionType=API&action=MissionAction";
+  var url = "index.php?subSys=MSS&actionType=API&action=GoalRelationsAction";
   $.ajax({
     type: "POST",
     url: url,
@@ -193,7 +193,7 @@ function showRelationDetail(goal_type, goal_id) {
   sch_val['goal_type'] = goal_type;
   sch_val['goal_id'] = goal_id;
   //return;
-  var url = "index.php?subSys=MSS&actionType=API&action=MissionAction";
+  var url = "index.php?subSys=MSS&actionType=API&action=GoalRelationsAction";
   $.ajax({
     type: "POST",
     url: url,
@@ -440,7 +440,7 @@ function getUnconnectedRelationList() {
   }
 
   //console.log(sch_val);
-  var url = "index.php?subSys=MSS&actionType=API&action=MissionAction";
+  var url = "index.php?subSys=MSS&actionType=API&action=GoalRelationsAction";
   $.ajax({
     type: "POST",
     url: url,
@@ -538,7 +538,7 @@ function delRelation(gr_id) {
   }
   var sch_val = new Object();
   sch_val['gr_id'] = gr_id;
-  var url = "index.php?subSys=MSS&actionType=API&action=MissionAction";
+  var url = "index.php?subSys=MSS&actionType=API&action=GoalRelationsAction";
   $.ajax({
     type: "POST",
     url: url,
@@ -562,7 +562,7 @@ function addRelation(gr_main_goal, gr_sub_goal, gr_relation_type) {
   sch_val['gr_sub_goal'] = gr_sub_goal;
   sch_val['gr_relation_type'] = gr_relation_type;
   console.log(sch_val);
-  var url = "index.php?subSys=MSS&actionType=API&action=MissionAction";
+  var url = "index.php?subSys=MSS&actionType=API&action=GoalRelationsAction";
   $.ajax({
     type: "POST",
     url: url,
@@ -589,7 +589,7 @@ function showRelationExpandableTable(goal_type, goal_id) {
   sch_val['goal_type'] = goal_type;
   sch_val['goal_id'] = goal_id;
   console.log(sch_val);
-  var url = "index.php?subSys=MSS&actionType=API&action=MissionAction";
+  var url = "index.php?subSys=MSS&actionType=API&action=GoalRelationsAction";
   $.ajax({
     type: "POST",
     url: url,
@@ -600,7 +600,7 @@ function showRelationExpandableTable(goal_type, goal_id) {
       var goal_relation_list_expandable_table_html = '';
       var tmp_ltg = '';
       var tmp_mtg = '';
-      var row_con=0;
+      var row_con = 0;
       $.each(data['row'], function (k, v) {
 
         if (tmp_mtg != v['mtg_id'] && tmp_mtg != '') {
@@ -613,9 +613,10 @@ function showRelationExpandableTable(goal_type, goal_id) {
           //長期目標的TR
           goal_relation_list_expandable_table_html += '<tr data-widget="expandable-table" aria-expanded="true">';
           goal_relation_list_expandable_table_html += '<td><i class="expandable-table-caret fas fa-caret-right fa-fw"></i>';
-          if(v['ltg_id']===null){
-            v['ltg_name']='-';
+          if (v['ltg_id'] === null) {
+            v['ltg_name'] = '-';
           }
+          goal_relation_list_expandable_table_html += '<span class="badge bg-danger">長期</span>';
           goal_relation_list_expandable_table_html += v['ltg_name'];
           goal_relation_list_expandable_table_html += '</td>';
           goal_relation_list_expandable_table_html += '</tr>';
@@ -627,18 +628,19 @@ function showRelationExpandableTable(goal_type, goal_id) {
           goal_relation_list_expandable_table_html += '<table class="table table-hover">';
           goal_relation_list_expandable_table_html += '<tbody>';
         }
-        if(tmp_mtg != v['mtg_id']){
+        if (tmp_mtg != v['mtg_id']) {
           //中期目標的TR
           goal_relation_list_expandable_table_html += '<tr data-widget="expandable-table" aria-expanded="true">';
           goal_relation_list_expandable_table_html += '<td>';
           goal_relation_list_expandable_table_html += '<i class="expandable-table-caret fas fa-caret-right fa-fw"></i>';
-          if(v['mtg_id']===null){
-            v['mtg_name']='-';
+          if (v['mtg_id'] === null) {
+            v['mtg_name'] = '-';
           }
+          goal_relation_list_expandable_table_html += '<span class="badge bg-warning">中期</span>';
           goal_relation_list_expandable_table_html += v['mtg_name'];
           goal_relation_list_expandable_table_html += '</td>';
           goal_relation_list_expandable_table_html += '</tr>';
-          
+
           //屬於中期目標 伸縮表的表頭
           goal_relation_list_expandable_table_html += '<tr class="expandable-body">';
           goal_relation_list_expandable_table_html += '<td>';
@@ -646,9 +648,11 @@ function showRelationExpandableTable(goal_type, goal_id) {
           goal_relation_list_expandable_table_html += '<table class="table table-hover">';
           goal_relation_list_expandable_table_html += '<tbody>';
         }
-        
+
         goal_relation_list_expandable_table_html += '<tr>';
         goal_relation_list_expandable_table_html += '<td>';
+        goal_relation_list_expandable_table_html += '<i class="fas fa-genderless fa-fw"></i>';
+        goal_relation_list_expandable_table_html += '<span class="badge bg-primary">短期</span>';
         goal_relation_list_expandable_table_html += v['stg_name'];
         goal_relation_list_expandable_table_html += '</td>';
         goal_relation_list_expandable_table_html += '</tr>';
@@ -658,7 +662,7 @@ function showRelationExpandableTable(goal_type, goal_id) {
         tmp_mtg = v['mtg_id'];
         row_con++;
       });
-      if(row_con>0){
+      if (row_con > 0) {
         goal_relation_list_expandable_table_html += '</tbody></table></div></td></tr>';
         goal_relation_list_expandable_table_html += '</tbody></table></div></td></tr>';
       }
@@ -675,15 +679,12 @@ function showRelationExpandableTable(goal_type, goal_id) {
 
 }
 
-
-
 //重設任務表單
 function reset() {
   $('.form_ins_val').val('');
   $('.form_ins_val').attr('disabled', true);
   $('.form_ins_val').attr('readonly', true);
 }
-
 
 $('#btnRelationsCreate').on('click', function () {
   $('#goal_relation_set_form_title').text('Goal Relations Set Form');

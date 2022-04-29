@@ -157,7 +157,7 @@
                   <div class="col-sm-6">
                     <label>起始時間</label>
                     <div class="input-group">
-                      <input type="text" class="form-control form_ins_val"  name="stg_start_time" id="stg_start_time" placeholder="起始時間" data-fname="起始時間">
+                      <input type="text" class="form-control form_ins_val" name="stg_start_time" id="stg_start_time" placeholder="起始時間" data-fname="起始時間">
                       <div class="input-group-prepend">
                         <button type="button" class="btn btn-success" onclick="setTime('stg_start_time')">Now</button>
                       </div>
@@ -175,6 +175,24 @@
                 </div>
               </div>
             </div>
+            <br>
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="form-group row">
+                  <label for="sch_pi_name" class="col-sm-10 col-form-label">績效指標名稱</label>
+                  <div class="col-sm-2">
+                    <input type="text" class="form-control modal_sch_val" id="sch_pi_name" placeholder="績效指標名稱">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="row" id="stg_performance_relation">
+                </div>
+              </div>
+            </div>
+            <br>
             <div class="row">
               <div class="col-sm-12">
                 <div class="form-group">

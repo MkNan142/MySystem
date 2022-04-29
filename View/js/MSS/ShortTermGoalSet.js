@@ -22,8 +22,8 @@ $(function () {
   //開始時間預設為現在
   $('#stg_start_time').data('daterangepicker').setStartDate(now_format);
   //結束時間預設為月底 並將欄位留空
-  var default_end=new Date(now.getFullYear(),now.getMonth() + 1,0);
-  default_end_format = default_end.getFullYear() + "-" + (default_end.getMonth() + 1 < 10 ? '0' : '') + (default_end.getMonth() + 1) + "-" + (default_end.getDate() < 10 ? '0' : '') + (default_end.getDate())+" 23:59:59";
+  var default_end = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+  default_end_format = default_end.getFullYear() + "-" + (default_end.getMonth() + 1 < 10 ? '0' : '') + (default_end.getMonth() + 1) + "-" + (default_end.getDate() < 10 ? '0' : '') + (default_end.getDate()) + " 23:59:59";
   $('#stg_end_time').data('daterangepicker').setStartDate(default_end_format);
 
   $('#stg_end_time').val('');
@@ -36,6 +36,65 @@ $(function () {
   getRecord(1);
 })
 
+//取得可進行連結的短期目標
+function getPerformanceIndicatorList(performance_relation_list = '') {
+  var sch_val = new Object();
+  var url = "index.php?subSys=MSS&actionType=API&action=ShortTermGoalSetAction";
+  sch_val['pi_name'] = $('#sch_pi_name').val();
+  sch_val['onckecked'] = performance_relation_list;
+  $.ajax({
+    type: "POST",
+    url: url,
+    dataType: "json",
+    data: { data: sch_val, doMissionAction: 'getPerformanceIndicatorList' }, // serializes the form's elements.
+    success: function (data) {
+      console.log(data);
+      $('#stg_performance_relation').html('');
+      var tmp = '';
+      tmp += '<div class="form-check col-sm-3">';
+      tmp += '<input class="form-check-input" type="checkbox" name="performance_indicator_id" value="0" id="performance_indicator_checkbox_0">';
+      tmp += '<label class="form-check-label" for="performance_indicator_checkbox_0">不關聯</label>';
+      tmp += '</div>';
+      $.each(data['row'], function (k, v) {
+        tmp += '<div class="form-check col-sm-3">';
+        tmp += '<input class="form-check-input" type="checkbox" name="performance_indicator_id" value="' + v['pi_id'] + '" id="performance_indicator_checkbox_' + v['pi_id'] + '">';
+        tmp += '<label class="form-check-label" for="performance_indicator_checkbox_' + v['pi_id'] + '">' + v['pi_name'] + '</label>';
+        tmp += '</div>';
+      })
+      $('#stg_performance_relation').html(tmp);
+      if (performance_relation_list != '' && performance_relation_list != null) {
+        console.log(performance_relation_list);
+        performance_relation_list = performance_relation_list.split(',');
+        performance_relation_list.forEach(function (v, k) {
+          //console.log(v);
+          $('#performance_indicator_checkbox_' + v).prop('checked', true);
+        })
+      }
+      $('input[name="performance_indicator_id"]').on("change", function () {
+        //console.log(this);
+        if ($(this).attr('id') == 'performance_indicator_checkbox_0' && $(this).prop('checked')) {
+          if (confirm('確定不關聯任何績效指標嗎?')) {
+            $('input[name="performance_indicator_id"]').each(function () {
+              $(this).prop('checked', false);
+            })
+            $(this).prop('checked', true);
+          } else {
+            $(this).prop('checked', false);
+          }
+        } else {
+          if ($('#performance_indicator_checkbox_0').prop('checked')) {
+            $(this).prop('checked', false);
+          }
+        }
+      })
+    },
+    error: function (data) {
+      //console.log(ins_val);
+      console.log('An error occurred.');
+      console.log(data);
+    }
+  });
+}
 //表單送出
 function saveform() {
   var form_check = 1;
@@ -48,14 +107,27 @@ function saveform() {
     alert('有欄位尚未輸入');
     return 0;
   }
-  if (!form_check) {
-    return 0;
+
+  if (new Date($('#stg_start_time').val()) > new Date($('#stg_end_time').val())) {
+    alert('結束時間比起始時間還早')
+    return ;
   }
+
+  var performance_relation = '';
+  $('input[name="performance_indicator_id"]').each(function () {
+    if ($(this).prop('checked')) {
+      if (performance_relation != '') {
+        performance_relation += ',';
+      }
+      performance_relation += $(this).val();
+    }
+  })
   var ins_val = new Object();
   $('.form_ins_val').each(function () {
     //console.log($(this).attr('type'));
     ins_val[$(this).attr('id')] = $(this).val();
   })
+  ins_val['stg_performance_relation'] = performance_relation;
   //console.log(ins_val);
   var doMissionAction = '';
   var FinishAlert = '';
@@ -67,7 +139,7 @@ function saveform() {
     FinishAlert = '修改完成';
   }
   //return false;
-  var url = "index.php?subSys=MSS&actionType=API&action=MissionAction";
+  var url = "index.php?subSys=MSS&actionType=API&action=ShortTermGoalSetAction";
   $.ajax({
     type: "POST",
     url: url,
@@ -107,7 +179,7 @@ function getRecord(pageNum) {
   })
   sch_val['pageNum'] = pageNum;
   //console.log(sch_val);
-  var url = "index.php?subSys=MSS&actionType=API&action=MissionAction";
+  var url = "index.php?subSys=MSS&actionType=API&action=ShortTermGoalSetAction";
   $.ajax({
     type: "POST",
     url: url,
@@ -248,7 +320,7 @@ function getRecord(pageNum) {
 function editMission(stg_id) {
   var sch_val = new Object();
   sch_val['stg_id'] = stg_id;
-  var url = "index.php?subSys=MSS&actionType=API&action=MissionAction";
+  var url = "index.php?subSys=MSS&actionType=API&action=ShortTermGoalSetAction";
   $.ajax({
     type: "POST",
     url: url,
@@ -265,6 +337,9 @@ function editMission(stg_id) {
           $('#' + k).data('daterangepicker').setStartDate(null);
           $('#' + k).data('daterangepicker').setStartDate(v);
         }
+        if (k == 'stg_performance_relation') {
+          getPerformanceIndicatorList(v);
+        }
       });
     },
     error: function (data) {
@@ -280,7 +355,7 @@ function delMission(stg_id) {
   }
   var sch_val = new Object();
   sch_val['stg_id'] = stg_id;
-  var url = "index.php?subSys=MSS&actionType=API&action=MissionAction";
+  var url = "index.php?subSys=MSS&actionType=API&action=ShortTermGoalSetAction";
   $.ajax({
     type: "POST",
     url: url,
@@ -320,6 +395,7 @@ function setTime(field_name) {
 
 $('#btnMissionCreate').on('click', function () {
   reset();
+  getPerformanceIndicatorList();
   $('#stg_action').val('INS');
 })
 
@@ -344,4 +420,17 @@ $('.ms_short_table').not('.no_sort').on('click', function () {
     $(this).addClass('sorting_asc');
   }
   getRecord(1);
+})
+$('#sch_pi_name').on('change', function () {
+
+  var performance_relation = '';
+  $('input[name="performance_indicator_id"]').each(function () {
+    if ($(this).prop('checked')) {
+      if (performance_relation != '') {
+        performance_relation += ',';
+      }
+      performance_relation += $(this).val();
+    }
+  })
+  getPerformanceIndicatorList(performance_relation);
 })

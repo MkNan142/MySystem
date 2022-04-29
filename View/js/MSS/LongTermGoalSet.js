@@ -49,8 +49,10 @@ function saveform() {
     alert('有欄位尚未輸入');
     return 0;
   }
-  if (!form_check) {
-    return 0;
+
+  if (new Date($('#ltg_start_time').val()) > new Date($('#ltg_end_time').val())) {
+    alert('結束時間比起始時間還早')
+    return ;
   }
   var ins_val = new Object();
   $('.form_ins_val').each(function () {
@@ -68,7 +70,7 @@ function saveform() {
     FinishAlert = '修改完成';
   }
   //return false;
-  var url = "index.php?subSys=MSS&actionType=API&action=MissionAction";
+  var url = "index.php?subSys=MSS&actionType=API&action=LongTermGoalSetAction";
   $.ajax({
     type: "POST",
     url: url,
@@ -108,7 +110,7 @@ function getRecord(pageNum) {
   })
   sch_val['pageNum'] = pageNum;
   //console.log(sch_val);
-  var url = "index.php?subSys=MSS&actionType=API&action=MissionAction";
+  var url = "index.php?subSys=MSS&actionType=API&action=LongTermGoalSetAction";
   $.ajax({
     type: "POST",
     url: url,
@@ -248,7 +250,7 @@ function getRecord(pageNum) {
 function editMission(ltg_id) {
   var sch_val = new Object();
   sch_val['ltg_id'] = ltg_id;
-  var url = "index.php?subSys=MSS&actionType=API&action=MissionAction";
+  var url = "index.php?subSys=MSS&actionType=API&action=LongTermGoalSetAction";
   $.ajax({
     type: "POST",
     url: url,
@@ -281,7 +283,7 @@ function delMission(ltg_id) {
   }
   var sch_val = new Object();
   sch_val['ltg_id'] = ltg_id;
-  var url = "index.php?subSys=MSS&actionType=API&action=MissionAction";
+  var url = "index.php?subSys=MSS&actionType=API&action=LongTermGoalSetAction";
   $.ajax({
     type: "POST",
     url: url,

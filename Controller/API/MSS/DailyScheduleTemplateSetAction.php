@@ -26,6 +26,9 @@ class DailyScheduleTemplateSetAction implements actionPerformed {
       case 'delDailyScheduleTemplateByID':
         $returnData = $DailyScheduleTemplateSetModel->delDailyScheduleTemplateByID($_POST["data"]);
         break;
+      case 'getShortTermGoalList':
+        $returnData = $DailyScheduleTemplateSetModel->getShortTermGoalList($_POST["data"]);
+        break;
     }
     echo json_encode($returnData, true);
   }

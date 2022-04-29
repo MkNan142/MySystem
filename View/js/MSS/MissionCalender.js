@@ -3,6 +3,7 @@ document.write('<script src="plugins/moment/moment.min.js"></script>');
 document.write('<script src="plugins/fullcalendar/main.js"></script>');
 
 var calendar;
+var url = "index.php?subSys=MSS&actionType=API&action=MissionCalenderAction";
 $(function () {
 
 
@@ -172,7 +173,7 @@ $(function () {
 
 //取得常用的日常目標
 function getDailyScheduleTemplate() {
-  var url = "index.php?subSys=MSS&actionType=API&action=MissionAction";
+  var url = "index.php?subSys=MSS&actionType=API&action=MissionCalenderAction";
   $.ajax({
     type: "POST",
     url: url,
@@ -209,7 +210,7 @@ function getDailySchedule(start, end) {
   sch_val['start'] = setDateFormat(start);
   sch_val['end'] = setDateFormat(end);
 
-  var url = "index.php?subSys=MSS&actionType=API&action=MissionAction";
+  var url = "index.php?subSys=MSS&actionType=API&action=MissionCalenderAction";
   $.ajax({
     type: "POST",
     url: url,
@@ -253,7 +254,7 @@ function getDailySchedule(start, end) {
 //取得建立新日常目標時所要連結的短期目標
 function getShortTermGoalList() {
   var sch_val = new Object();
-  var url = "index.php?subSys=MSS&actionType=API&action=MissionAction";
+  var url = "index.php?subSys=MSS&actionType=API&action=MissionCalenderAction";
   sch_val['start'] = '';
   sch_val['end'] = '';
   $.ajax({
@@ -308,7 +309,7 @@ function setDailyScheduleNewStartEnd(info) {
   set_val['end'] = setDateFormat(info.event.end);
   set_val['id'] = info.event._def.publicId;
 
-  var url = "index.php?subSys=MSS&actionType=API&action=MissionAction";
+  var url = "index.php?subSys=MSS&actionType=API&action=MissionCalenderAction";
   $.ajax({
     type: "POST",
     url: url,
@@ -350,7 +351,7 @@ function addNewEvent(info) {
   add_val['goal_relation'] = info.event.extendedProps.goal_relation;
   console.log(add_val);
   //return;
-  var url = "index.php?subSys=MSS&actionType=API&action=MissionAction";
+  var url = "index.php?subSys=MSS&actionType=API&action=MissionCalenderAction";
   $.ajax({
     type: "POST",
     url: url,
@@ -360,7 +361,10 @@ function addNewEvent(info) {
       console.log("日常目標新增成功");
       console.log(data);
       $('.loader').removeClass('is-active');
-      calendar.getEventById("-1").setProp('id', data);
+      calendar.getEventById("-1").setProp('id', data['LAST_ID']);
+      if (data['warn']) {
+        alert('所關聯短期目標與新增的日常目標時間不符!');
+      }
     },
     error: function (data) {
       //console.log(ins_val);
@@ -370,12 +374,11 @@ function addNewEvent(info) {
       console.log(data);
     }
   });
-
-
 }
 
 //當點擊日常目標時取得日常目標的相關資料
 function getDailyScheduleDetial(publicId) {
+  $('#modal_finish_div').hide();
   //將彈出視窗目前勾選的短期目標關聯都取消勾選
   $('input[name="modal_short_term_goal_id"]').each(function () {
     $(this).prop('checked', false);
@@ -396,10 +399,10 @@ function getDailyScheduleDetial(publicId) {
   }, function (start, end, label) {
     //console.log('New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')');
   });
-  
+
   var sch_val = new Object();
   sch_val['publicId'] = publicId;
-  var url = "index.php?subSys=MSS&actionType=API&action=MissionAction";
+  var url = "index.php?subSys=MSS&actionType=API&action=MissionCalenderAction";
   $.ajax({
     type: "POST",
     url: url,
@@ -416,10 +419,14 @@ function getDailyScheduleDetial(publicId) {
         if (k == 'ds_start_time' || k == 'ds_end_time') {
           $('#' + k).data('daterangepicker').setStartDate(v);
         }
-        $('#modal_color_selecter').val('#' + v);
-        $('#modal_color_selecter').change();
-
+        if (k == 'ds_color') {
+          $('#modal_color_selecter').val('#' + v);
+          $('#modal_color_selecter').change();
+        }
       });
+      if(data['row']['ds_status']=='5'){
+        $('#modal_finish_div').show();
+      }
       getModalShortTermGoalList(goal_relation_list);
     },
     error: function (data) {
@@ -434,7 +441,7 @@ function getModalShortTermGoalList(goal_relation_list = '') {
   // console.log('開始的list');
   // console.log(goal_list);
   var sch_val = new Object();
-  var url = "index.php?subSys=MSS&actionType=API&action=MissionAction";
+  var url = "index.php?subSys=MSS&actionType=API&action=MissionCalenderAction";
   sch_val['start'] = $('#ds_start_time').val();
   sch_val['end'] = $('#ds_end_time').val();
   $.ajax({
@@ -523,14 +530,42 @@ function updDailySchedule() {
   ins_val['ds_color'] = $('#modal_color_selecter').val().substr(1, 6);
   //console.log(ins_val);
   $('.loader').addClass('is-active');
-  var url = "index.php?subSys=MSS&actionType=API&action=MissionAction";
+  //已完成的日常目標如需修改時
+  if ($('#modal_finish_div').css('display') == 'block') {
+    console.log('block');
+    var performance_indicator_record_list = '';
+    var performance_indicator_record_value = new Object()
+    $('input[name="modal_performance_indicator_record_id"]').each(function () {
+      if ($(this).prop('checked')) {
+        if (performance_indicator_record_list != '') {
+          performance_indicator_record_list += ',';
+        }
+        performance_indicator_record_list += $(this).val();
+        if($('#pir_value_'+$(this).val()).val()==''){
+          $('#pir_value_'+$(this).val()).focus();
+          alert('已勾選欄位不可空白');
+          return;
+        }else{
+          performance_indicator_record_value[$(this).val()]=$('#pir_value_'+$(this).val()).val();
+        }
+        
+      }
+    })
+
+    ins_val['ds_execution_start_time'] = $('#ds_execution_start_time').val();
+    ins_val['ds_execution_end_time'] = $('#ds_execution_end_time').val();
+    ins_val['performance_indicator_record_list'] = performance_indicator_record_list;
+    ins_val['performance_indicator_record_value'] = performance_indicator_record_value;
+  }
+  console.log(ins_val);
+  var url = "index.php?subSys=MSS&actionType=API&action=MissionCalenderAction";
   $.ajax({
     type: "POST",
     url: url,
     dataType: "json",
     data: { data: ins_val, doMissionAction: "updDailySchedule" },
     success: function (data) {
-      //console.log(data);
+      console.log(data);
       if (data) {
         console.log('修改完成')
         $('#btn_moadl_close').click();
@@ -561,7 +596,7 @@ function delEvent() {
   var del_val = new Object();
   del_val['ds_id'] = $('#ds_id').val();
 
-  var url = "index.php?subSys=MSS&actionType=API&action=MissionAction";
+  var url = "index.php?subSys=MSS&actionType=API&action=MissionCalenderAction";
   $.ajax({
     type: "POST",
     url: url,
@@ -585,6 +620,19 @@ function delEvent() {
   });
 }
 
+//重設任務表單
+function reset() {
+  $('#modal_finish_div').hide();
+  $('#modal_edit_div input').attr('disabled', false);
+  $('#modal_edit_div select').attr('disabled', false);
+  $('input[name="modal_short_term_goal_id"]').attr('disabled', false);
+  $('#ds_execution_start_time,#ds_execution_end_time').data('daterangepicker').remove();
+}
+function setTime(field_name) {
+  var now_format = setDateFormat(new Date());
+
+  $('#' + field_name).val(now_format);
+}
 /* + ADDING EVENTS */
 var currColor = '#3c8dbc' //Red by default
 // Color chooser button
@@ -693,6 +741,73 @@ $('#ds_start_time,#ds_end_time').on("change", function () {
     getModalShortTermGoalList(goal_relation_list);
   }
 })
+
+$('#btnShowModalFinish').on("click", function () {
+  $('#modal_finish_div').show();
+  $('#modal_edit_div input').attr('disabled', true);
+  $('#modal_edit_div select').attr('disabled', true);
+  $('input[name="modal_short_term_goal_id"]').attr('disabled', true);
+  $('#ds_status').val('5');
+  $('#ds_execution_start_time,#ds_execution_end_time').daterangepicker({
+    "singleDatePicker": true,
+    "timePicker": true,
+    "timePicker24Hour": true,
+    "timePickerSeconds": true,
+    "startDate": null,
+    "autoApply": true,
+    locale: {
+      format: 'YYYY-MM-DD HH:mm:ss',
+      cancelLabel: 'Clear'
+    }
+  });
+  $('#ds_execution_start_time').val($('#ds_start_time').val());
+  $('#ds_execution_end_time').val($('#ds_end_time').val());
+  $('#ds_execution_start_time').data('daterangepicker').setStartDate($('#ds_start_time').val());
+  $('#ds_execution_end_time').data('daterangepicker').setStartDate($('#ds_end_time').val());
+
+  var sch_val = new Object();
+  sch_val['ds_id'] = $('#ds_id').val();
+  $.ajax({
+    type: "POST",
+    url: url,
+    dataType: "json",
+    data: { data: sch_val, doMissionAction: 'getDailySchedulePerformanceIndicator' }, // serializes the form's elements.
+    success: function (data) {
+      console.log(data);
+      $('#modal_performance_indicator_record_checklist').html('');
+      var tmp = '';
+      // tmp += '<div class="form-check col-sm-6">';
+      // tmp += '<input class="form-check-input" type="checkbox" name="modal_performance_indicator_record_id" value="0" id="modal_performance_indicator_record_checkbox_0">';
+      // tmp += '<label class="form-check-label" for="modal_performance_indicator_record_checkbox_0">不關聯</label>';
+      // tmp += '</div>';
+
+      $.each(data['row'], function (k, v) {
+        tmp += '</br>';
+        tmp += '<div class="form-check col-sm-12 form-group ">';
+        tmp += '<input class="form-check-input" type="checkbox" name="modal_performance_indicator_record_id" value="' + v['pi_id'] + '" id="modal_performance_indicator_record_checkbox_' + v['pi_id'] + '">';
+        tmp += '<div class="input-group">';
+        tmp += '<label class=" col-form-label">完成</label>';
+        tmp += '<input type="text" class="form-control col-sm-3" id="pir_value_' + v['pi_id'] + '" placeholder="達成量">';
+        tmp += '<div class="input-group-prepend">';
+        tmp += '<label class=" col-form-label">' + v['pi_unit'] + '</label>';
+        tmp += '<label class=" col-form-label">' + v['pi_describe'] + '</label>';
+        tmp += '</div>';
+        tmp += '</div>';
+        //tmp += '<label class="form-check-label" for="modal_performance_indicator_record_checkbox_' + v['stg_id'] + '">' + v['stg_name'] + '</label>';
+        tmp += '</div>';
+      })
+      $('#modal_performance_indicator_record_checklist').html(tmp);
+      console.log(tmp);
+    },
+    error: function (data) {
+      //console.log(ins_val);
+      console.log('An error occurred.');
+      console.log(data);
+    }
+  });
+
+})
+
 //取得顯眼對比色所使用 參考:https://qa.1r1g.com/sf/ask/44451571/
 function luma(color) // color can be a hx string or an array of RGB values 0-255
 {

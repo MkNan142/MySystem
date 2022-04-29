@@ -6,7 +6,7 @@ class MissionModel extends Model {
     $this->init('mission_system_singal');
   }
   //ED 設定連線 
-
+  /*
   //短期任務設定相關
   function insShortTermMission($income_data) {
     $stg_name = $income_data['stg_name'];
@@ -299,7 +299,7 @@ class MissionModel extends Model {
     $status[] = $stmt->execute();
     return $status;
   }
-
+*/
   //任務關聯設定相關
   //取得未關聯過的短中長期目標清單  
   function getUnconnectedGoal($income_data) {
@@ -325,7 +325,7 @@ class MissionModel extends Model {
                     UNION ALL
                     SELECT *,'2' as goal_type FROM `mid_term_goal` 
                     UNION ALL
-                    SELECT *,'3' as goal_type FROM `short_term_goal` ) as T1
+                    SELECT `stg_id`, `stg_name`, `stg_describe`, `stg_start_time`, `stg_end_time`, `stg_status`, `stg_create_time`,'3' as goal_type FROM `short_term_goal`) as T1
                   WHERE " . $sqlWhere . " ";
 
     /*$sqlCount = "SELECT T1.ltg_id as goal_id,T1.ltg_name as goal_name,ltg_start_time as goal_start_time,ltg_end_time as goal_end_time, ltg_status as goal_status,goal_type
@@ -355,7 +355,7 @@ class MissionModel extends Model {
               UNION ALL
               SELECT *,'2' as goal_type FROM `mid_term_goal` 
               UNION ALL
-              SELECT *,'3' as goal_type FROM `short_term_goal` ) as T1
+              SELECT `stg_id`, `stg_name`, `stg_describe`, `stg_start_time`, `stg_end_time`, `stg_status`, `stg_create_time`,'3' as goal_type FROM `short_term_goal` ) as T1
             WHERE " . $sqlWhere . " 
             ORDER BY $orderby $Inverted,ltg_id $Inverted 
             limit $firstData,10";
@@ -385,6 +385,7 @@ class MissionModel extends Model {
     $data['rowcount'] = $rowcount;
     return $data;
   }
+  /*
   //取得目標的詳細內容與關連清單
   function getRelationDetailByID($income_data) {
     $goal_type = $income_data['goal_type'];
@@ -856,5 +857,5 @@ class MissionModel extends Model {
 
     return $status;
   }
-
+*/
 }

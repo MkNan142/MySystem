@@ -162,7 +162,7 @@ function getRecord(pageNum) {
 //取得可進行連結的短期目標
 function getShortTermGoalList(goal_relation_list = '') {
   var sch_val = new Object();
-  var url = "index.php?subSys=MSS&actionType=API&action=MissionAction";
+  var url = "index.php?subSys=MSS&actionType=API&action=DailyScheduleTemplateSetAction";
   sch_val['start'] = '';
   sch_val['end'] = '';
   $.ajax({

@@ -8,7 +8,7 @@ class MissionAction implements actionPerformed {
 
     $doMissionAction = $_POST["doMissionAction"];
     switch ($doMissionAction) {
-
+        /*
         //短期任務設定相關
       case 'insShortTermMission': //建立短期目標
         $returnData = $_POST["data"];
@@ -125,7 +125,7 @@ class MissionAction implements actionPerformed {
       case 'delPerformanceIndicatorByID':
         $returnData = $MissionModel->delPerformanceIndicatorByID($_POST["data"]);
         break;
-
+        */
     }
     echo json_encode($returnData, true);
   }

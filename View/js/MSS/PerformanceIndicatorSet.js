@@ -26,7 +26,7 @@ function getRecord(pageNum) {
     })
     sch_val['pageNum'] = pageNum;
     console.log(sch_val);
-    var url = "index.php?subSys=MSS&actionType=API&action=MissionAction";
+    var url = "index.php?subSys=MSS&actionType=API&action=PerformanceIndicatorSetAction";
     $.ajax({
         type: "POST",
         url: url,
@@ -177,7 +177,7 @@ function saveform() {
         FinishAlert = '修改完成';
     }
     //return false;
-    var url = "index.php?subSys=MSS&actionType=API&action=MissionAction";
+    var url = "index.php?subSys=MSS&actionType=API&action=PerformanceIndicatorSetAction";
     $.ajax({
         type: "POST",
         url: url,
@@ -203,7 +203,7 @@ function saveform() {
 function editPerformance(pi_id) {
     var sch_val = new Object();
     sch_val['pi_id'] = pi_id;
-    var url = "index.php?subSys=MSS&actionType=API&action=MissionAction";
+    var url = "index.php?subSys=MSS&actionType=API&action=PerformanceIndicatorSetAction";
     $.ajax({
         type: "POST",
         url: url,
@@ -230,7 +230,7 @@ function delPerformance(pi_id) {
     }
     var sch_val = new Object();
     sch_val['pi_id'] = pi_id;
-    var url = "index.php?subSys=MSS&actionType=API&action=MissionAction";
+    var url = "index.php?subSys=MSS&actionType=API&action=PerformanceIndicatorSetAction";
     $.ajax({
         type: "POST",
         url: url,
@@ -256,13 +256,12 @@ function reset() {
     $('.form_ins_val').val('');
     $('.form_ins_val').attr('disabled', false);
 
-    $('#pi_status').val('0');
-    $('#pi_start_time').val(now_format);
+    $('#pi_status').val('1');
     $('#pi_action').val('INS');
 }
 
 
-$('#btnMissionCreate').on('click', function () {
+$('#btnPerformanceCreate').on('click', function () {
     reset();
     $('#pi_action').val('INS');
 })
